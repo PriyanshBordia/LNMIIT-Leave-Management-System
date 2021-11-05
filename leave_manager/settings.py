@@ -25,9 +25,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', False)
 
-ALLOWED_HOSTS = ['127.0.0.0']
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS'), '127.0.0.1']
 
-ADMINS = [('Priyansh Bordia', 'priyanshbordia2@gmail.com')]
+ADMINS = [os.getenv('ADMINS'), ('Priyansh Bordia', 'priyanshbordia2@gmail.com')]
 
 # Application definition
 
@@ -39,8 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'accounts',
 	'django-extensions',
+	'django_humanize',
+	'humanize',
+	'bootstrap4',
+	'fontawesome_5',
+	'django_autoslug',
+	'accounts',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+   	# 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'leave_manager.urls'
@@ -81,7 +87,25 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+
+   	# 'development': {
+    #     'ENGINE': os.getenv('DEV_ENGINE'),
+    #     'NAME': os.getenv('DEV_DB_NAME'),
+    #     'USER': os.getenv('DEV_DB_USER'),
+    #     'PASSWORD': os.getenv('DEV_DB_PASSWORD'),
+    #     'HOST': os.getenv('DEV_DB_HOST'),
+    #     'PORT': os.getenv('DEV_DB_PORT'),
+    # },
+
+   	# 'production': {
+    #     'ENGINE': os.getenv('ENGINE'),
+    #     'NAME': os.getenv('DB_NAME'),
+    #     'USER': os.getenv('DB_USER'),
+    #     'PASSWORD': os.getenv('DB_PASSWORD'),
+    #     'HOST': os.getenv('DB_HOST'),
+    #     'PORT': os.getenv('DB_PORT'),
+    # },
 }
 
 
@@ -120,8 +144,33 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, '/static'),
+#     os.path.join(BASE_DIR, 'circle/static'),
+# )
+
+# Media Files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'circle/static/media')
+MEDIA_URL =  '/media/'
+
+#login redirection to homepage
+LOGIN_REDIRECT_URL = 'home'
+
+#logout redirection to homepage
+LOGOUT_REDIRECT_URL = 'home'
+
+#Send reset pass e-mails
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL = 'Team Baazaar - The Marketplace <no-reply@baazaar.herokuapp.com>'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

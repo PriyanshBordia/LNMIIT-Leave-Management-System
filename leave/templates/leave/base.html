@@ -5,14 +5,175 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+	<!-- Font Icons -->
+	<script src="https://kit.fontawesome.com/3288abfe00.js" crossorigin="anonymous"></script>
+	
+	<!-- CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	
+	<!-- JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'leave/css/style.css' %}">
 
 	{% block head %}{% endblock %}
-
+	
+	<!-- Icon -->
+	<!-- <link rel="icon" href="" /> -->
 	<title> {% block title %}{% endblock %} | Leave Management</title>
 </head>
 <body>
-	{% block body %}{% endblock %}
+
+	 <!--TODO: Add NavBar with: App Name, LogIn, LogOut, Register, etc-->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0a192f; border-bottom: .125rem solid #ccd6f6;">
+        <a class="navbar-brand" href="{% url 'home' %}" style="color: #c2dde6; font-size: 2rem;">Baazaar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #c2dde6;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="font-size: 1.1rem;">
+			{% if user.is_authenticated %}
+				<form class="form-inline my-3 my-lg-0 mr-4 ml-auto" action="{% url 'result' 'article' %}" method="POST">
+				
+					{% csrf_token %}
+
+					<input class="form-control mr-sm-3" type="search" name="search" autocomplete="off" autofocus placeholder="Search Articles..." aria-label="Search">
+					<button class="form-control btn btn-outline-warning my-2 my-sm-2" type="submit">Search</button>
+				</form>
+				<form class="form-inline my-3 my-lg-0 mr-2 ml-2" action="{% url 'result' 'person' %}" method="POST">
+					
+					{% csrf_token %}
+
+					<input class="form-control mr-sm-3" type="search" name="search" autocomplete="off" autofocus placeholder="Find People..." aria-label="Search">
+					<button class="form-control btn btn-outline-info my-2 my-sm-2" type="submit">Search</button>
+				</form>
+			{% endif %}
+            <ul class="navbar-nav mr-3 ml-auto">
+				{% if request.user.is_superuser %}
+					<li class="nav-item dropdown">
+						<div class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Super">
+							<img src="https://img.icons8.com/bubbles/50/000000/verified-account.png" />
+						</div>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" role="menu">
+							<a class="dropdown-item" href="{% url 'admin:index' %}">Admin Site</a>
+							<a class="dropdown-item" href="{% url 'user' request.user.id %}">User</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{% url 'tags' %}">Tags</a>
+							<a class="dropdown-item" href="{% url 'articles' %}">Articles</a>
+							<a class="dropdown-item" href="{% url 'chats' %}">Chats</a>
+							<a class="dropdown-item" href="{% url 'persons' %}">Persons</a>
+							<a class="dropdown-item" href="{% url 'users' %}">Users</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{% url 'error' %}">Error</a>
+						</div>
+					</li>
+				{% endif %}
+				{% if user.is_authenticated %}
+					<li class="nav-item dropdown">
+						<div class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false" title="Profile">
+							<!-- Profile -->
+							{% if request.user.person.profile %}
+								<img src="{% static request.user.person.profile.url %}" alt="BP{{ request.user.person.id }}ID" style="width: 50px; height: 50px; border-radius: 50%;" />
+							{% else %}
+								<img src="https://img.icons8.com/bubbles/50/000000/stormtrooper.png" alt="BP{{ request.user.person.id }}ID" style="width: 50px; height: 50px; border-radius: 50%;" />
+							{% endif %}
+						</div>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" role="menu">
+							{% if request.user.person %}
+								<a class="dropdown-item" href="{% url 'person' request.user.person.id %}">Your details</a>
+								<a class="dropdown-item" href="{% url 'friends' %}">Your friends</a>
+								<a class="dropdown-item" href="{% url 'chats' %}">Your chats</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'display' %}">Display</a>
+								<a class="dropdown-item" href="{% url 'wishlisted' %}">Wishlist</a>
+								<a class="dropdown-item" href="{% url 'rented' %}">Rented</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'purchased' %}">Purchased</a>
+								<a class="dropdown-item" href="{% url 'sold' %}">Sold</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'addTag' %}">Add tag</a>
+								<a class="dropdown-item" href="{% url 'newArticle' %}">Add article</a>
+							{% else %}
+								<a class="dropdown-item" href="{% url 'newPerson' %}">Add person</a>
+							{% endif %}
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{% url 'password_reset' %}">Reset password</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
+						</div>
+					</li>
+					{% if request.user.person %}
+						<li class="nav-item m-auto">
+							<a class="nav-link" href="{% url 'carted' %}" title="Cart">
+								<img src="https://img.icons8.com/clouds/50/000000/buy.png" />
+							</a>
+						</li>
+					{% endif %}
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'login' %}" title="Login">
+							<!-- Log In -->
+							<img src="https://img.icons8.com/clouds/50/000000/login-rounded-right.png" />
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'password_reset' %}" title="Reset password">
+							<img src="https://img.icons8.com/bubbles/50/000000/reset.png" />
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'signup' %}" title="Register">
+							<!-- Register -->
+							<img src="https://img.icons8.com/bubbles/50/000000/export.png" />
+						</a>
+					</li>
+				{% endif %}
+				{% if user.is_superuser %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'signup' %}">
+							<!-- Register -->
+							<img src="https://img.icons8.com/bubbles/50/000000/export.png" />
+						</a>
+					</li>
+				{% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% block body %}{% endblock %}
+
+    <hr class="mt-4">
+    
+    <!-- Comments and Suggestions -->
+    <section class="comments">
+        <script src="https://utteranc.es/client.js" repo="PriyanshBordia/Marketplace" issue-term="title"
+            label="utterances" theme="dark-blue" crossorigin="anonymous" async>
+		</script>
+    </section>
+
+	<!-- Footer Section -->
+	<footer class="footer">
+		<div class="footer__grid">
+			<div class="footer__grid__handles">
+				<a href="https://github.com/PriyanshBordia" target="_blank" title="Repository"><i class="fab fa-github"></i></a>
+				<a href="mailto:priyanshbordia2@gmail.com" target="_blank" title="LNMIIT"><i class="fas fa-envelope"></i></a>
+			</div>
+			<div class="footer__grid__text">
+				<span class="has-hover">Created by Priyansh Bordia &copy; 2021.</span>
+			</div>
+		</div>
+	</footer>
 </body>
 </html>

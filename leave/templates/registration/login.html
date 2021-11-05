@@ -1,0 +1,35 @@
+<!-- templates/registration/login.html -->
+{% extends 'circle/base.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block head %}
+	{% load static %}
+	{% load bootstrap4 %}
+	{% load fontawesome_5 %}
+{% endblock %}
+
+{% block body %}
+    <div class="auth container container-fluid text-center">
+        <div class="auth__grid justify-content-center">
+			<img class="auth__grid__img" src="https://img.icons8.com/clouds/200/000000/lock--v1.png" />
+			<br>
+			<h2 class="auth__grid__title">Log In to enter the marketplace.!</h2>
+			<hr>
+            <form class="form-group" method="POST">
+				
+                {% csrf_token %}
+                
+                {% bootstrap_form form layout='horizontal' %}
+				
+				<div class="row">
+					<div class="col-md-12">
+						{% bootstrap_button "Log In" button_class="form-control form-control-lg btn btn-outline-info btn-lg" button_type="submit" %}
+					</div>
+				</div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

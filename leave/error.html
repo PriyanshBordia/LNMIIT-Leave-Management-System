@@ -1,0 +1,42 @@
+<!-- "templates/leave/error.html" -->
+
+{% extends "leave/base.html" %}
+
+{% block title %}
+    Error !!
+{% endblock %}
+
+{% block head %}
+	{% load static %}
+{% endblock %}
+
+{% block body %}
+	<div class="container container-fluid">
+		<div class="error justify-content-center">
+			<error class="error__grid">
+				<img class="error__grid__img" src="https://img.icons8.com/bubbles/200/000000/error.png" />
+				<div class="alert alert-danger error_grid__type">
+					{{ type }}
+				</div>
+				<div class="alert alert-warning erro__grid__message" role="alert">
+					{{ message }}
+				</div>
+				<div class="error__grid__a">
+					{% if link == 'search' %}
+						<a href="{% url link 'article' %}">
+							<button class="form-control form-control-lg btn btn-outline-danger btn-lg">
+								Search
+							</button>
+						</a>
+					{% else %}
+						<a href="{% url link %}">
+							<button class="form-control form-control-lg btn btn-outline-danger btn-lg">
+								Go. Back
+							</button>
+						</a>
+					{% endif %}
+				</div>
+			</error>
+		</div>
+	</div>
+{% endblock %}

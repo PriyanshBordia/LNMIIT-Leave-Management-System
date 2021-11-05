@@ -13,14 +13,17 @@ class Person(models.Model):
 		('HOD', 'Head of Department'),
 		('F', 'Faculty'),
 		('VF', 'Visiting Faculty'),
-		('S', 'Staff'),
+		# ('S', 'Staff'),
 	)
 
 	user = models.OneToOneField(User)
-	
-	e_id = models.CharField(max_length=10, unique=True)
 
-	role = models.CharField(max_length=5, choices=PERSON_ROLES)
+	faculty_id = models.CharField(max_length=10, unique=True)
+
+	first_name = models.CharField(max_length=50, blank=False, null=False)
+	last_name = models.CharField(max_length=50, blank=True, null=False)
+
+	role = models.CharField(max_length=5, choices=PERSON_ROLES, default='F')
 	designation = models.CharField(max_length=255)
 
 	updated_at = models.DateTimeField(auto_now=True)
@@ -28,5 +31,30 @@ class Person(models.Model):
 
 	slug = models.SlugField(unique=True)
 
+	def is_director(self):
+		return self.role == 'DR'
+
+	def is_dean(self):
+		return self.role == 'DN'
+
+	def is_valid(self):
+		return len(self.first_name) > 0 and self.user is not None
+
 	def __str__(self):
-		return f'{self.e_id}. {self.first_name} {self.last_name}'
+		return f'{self.id}. {self.first_name} {self.last_name}'
+
+
+class Application(models.Model):
+	APPLICATION_STATUS = (
+		('P', 'Pending'),
+		('A', 'Approved'),
+		('R', 'Rejected'),
+	)
+
+	person = models.ForeignKey(Person, on_delete=models.CASCADE)
+	status = models.CharField(max_length=1, choices=APPLICATION_STATUS, default='P')
+
+	updated_at = models.DateTimeField(auto_now=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+
+	

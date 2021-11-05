@@ -1,0 +1,37 @@
+<!-- templates/registration/signup.html -->
+
+{% extends 'circle/base.html' %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block head %}
+	{% load static %}
+	{% load fontawesome_5 %}
+	{% load bootstrap4 %}
+	{% bootstrap_messages %}
+{% endblock %}
+
+{% block body %}
+    <div class="auth container container-fluid text-center">
+        <div class="auth__grid justify-content-center">
+			<img class="auth__grid__img" src="https://img.icons8.com/bubbles/150/000000/enter-2.png" />
+			<br>
+			<h2 class="auth__grid__title">You register and will be a part of our family.</h2>
+			<hr>
+            <form class="form-group" method="POST">
+
+                {% csrf_token %}
+
+                {% bootstrap_form form layout='horizontal' %}
+
+				<div class="row">
+					<div class="col-md-12">
+						{% bootstrap_button "Register" button_class="form-control form-control-lg btn btn-outline-warning btn-lg" button_type="submit" %}				
+					</div>
+				</div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
