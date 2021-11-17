@@ -23,6 +23,9 @@ class Person(models.Model):
 	first_name = models.CharField(max_length=50, blank=False, null=False)
 	last_name = models.CharField(max_length=50, blank=True, null=False)
 
+	email = models.EmailField(blank=False, null=False)
+	office_no = models.BigIntegerField(blank=True, null=False)
+
 	role = models.CharField(max_length=5, choices=PERSON_ROLES, default='F')
 	designation = models.CharField(max_length=255)
 
