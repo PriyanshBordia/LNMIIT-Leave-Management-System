@@ -16,7 +16,7 @@ class Person(models.Model):
 		# ('S', 'Staff'),
 	)
 
-	user = models.OneToOneField(User)
+	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='person')
 
 	faculty_id = models.CharField(max_length=10, unique=True)
 

@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-	path(include('leave_manager.urls')),
+    path('', include('leave.urls')),
     path('admin/', admin.site.urls),
+	# path('account/', include('accounts.urls')),
+    # path('account/', include('django.contrib.auth.urls')),
 ]
