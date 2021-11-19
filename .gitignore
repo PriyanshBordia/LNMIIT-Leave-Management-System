@@ -351,3 +351,4 @@ MigrationBackup/
 venv
 .dccache
 .env
+.DS_Store
