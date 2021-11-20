@@ -4,7 +4,6 @@ from django.db.models.fields import SlugField
 
 # Create your models here.
 
-
 class Person(models.Model):
 
 	PERSON_ROLES = (
@@ -19,6 +18,7 @@ class Person(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='person')
 
 	faculty_id = models.CharField(max_length=10, unique=True)
+	leave_count = models.IntegerField(default=22)
 
 	first_name = models.CharField(max_length=50, blank=False, null=False)
 	last_name = models.CharField(max_length=50, blank=True, null=False)
@@ -28,7 +28,7 @@ class Person(models.Model):
 
 	role = models.CharField(max_length=5, choices=PERSON_ROLES, default='F')
 	designation = models.CharField(max_length=255)
-
+	
 	updated_at = models.DateTimeField(auto_now=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 
@@ -40,8 +40,11 @@ class Person(models.Model):
 	def is_dean(self):
 		return self.role == 'DN'
 
+	def is_hod(self):
+		return self.role == 'HOD'
+
 	def is_valid(self):
-		return len(self.first_name) > 0 and self.user is not None
+		return len(self.first_name) > 0 and self.user is not None and self.leave_count >= 0
 
 	def __str__(self):
 		return f'{self.id}. {self.first_name} {self.last_name}'
@@ -57,7 +60,18 @@ class Application(models.Model):
 	person = models.ForeignKey(Person, on_delete=models.CASCADE)
 	status = models.CharField(max_length=1, choices=APPLICATION_STATUS, default='P')
 
+	start_date = models.DateTimeField(blank=False, null=False)
+	end_date = models.DateTimeField(blank=False, null=False)
+
+	hasClasses = models.BooleanField(blank=False, null=False, default=False)
+	rescheduled_date = models.DateTimeField(blank=True, null=False)
+
+	acting_person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='acting_person', default=1)
+
+	comments = models.TextField(blank=True, null=False)
+
 	updated_at = models.DateTimeField(auto_now=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 
-	
+	def __str__(self):
+		return f'{self.id}. {self.person.first_name} {self.last_name}'

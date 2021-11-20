@@ -1,0 +1,77 @@
+.person {
+
+	margin: 1rem auto 1rem auto;
+	
+	border: .125rem solid $LightestNavy;
+	background-color: $LightNavy;
+
+
+	&__grid {
+
+		margin: .2rem .4rem .2rem .4rem;
+		padding: .2rem auto .2rem auto;
+		border: .125rem solid $LightestNavy;
+
+		&:hover {
+			border: .125rem solid $LightestSlate;
+		}
+
+		&__img {
+
+			margin: 1rem auto 1rem auto;
+			padding: 1rem 1rem 1rem 1rem;
+			width: 12.25rem;
+			height: 12.25rem;
+			text-align: center;
+			align-items: center;
+			border-radius: 50%;
+			border: .125rem solid $LightestSlate;
+
+			&:hover {
+				background-color: $LightNavy;
+			}
+		}
+
+		&__name {
+
+			margin: 1rem auto 1rem auto;
+			padding: 1rem 1rem 1rem 1rem;
+			font-size: 2rem;
+			color: $LightSlate;
+		}
+
+		&__username {
+
+			font-size: 1rem;
+			font-weight: 300;
+			color: $NeonGreen;
+		}
+
+		&__bio {
+			font-size: 1rem;
+		}
+
+		&__email, &__ph_no {
+			font-size: 1rem;
+		}
+
+		&__age, &__gender {
+			font-size: 1rem;
+		}
+
+		&__btn {
+
+			margin: 1rem auto 1rem auto;
+		}
+
+		&__form {
+
+			margin: 1rem 2rem 1rem 2rem;
+		}
+	}
+
+	&__rented, &__display, &__bookmarked, &__purchased, &__sold {
+
+		margin: 1rem auto 1rem auto;
+	}
+}
