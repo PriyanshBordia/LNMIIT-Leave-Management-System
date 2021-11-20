@@ -1,0 +1,47 @@
+<!-- "template/leave/user.html" -->
+{% extends "leave/base.html" %}
+
+{% block title %}
+    UU{{ user.id }}ID
+{% endblock %}
+
+{% block head %}
+	{% load static %}
+{% endblock %}
+
+{% block body %}
+	<div class="conatainer container-fluid text-center" style="max-width: 1000px; margin: auto;">
+		<div class="row justify-content-center">
+			<span class="col-md-4" style="float: left;"><img src="https://img.icons8.com/bubbles/200/000000/check-male.png" /></span>
+			<div class="col-md-4">
+				<h2>User Details</h2>
+				<h3>BU{{user.id }}ID</h3>
+				{% if user.id == request.user.id %}
+					<form class="form-group mt-4" action="{% url 'update' %}" method="POST">
+			
+						{% csrf_token %}
+			
+						<div class="form-group form-text h3">
+							<input class="form-control form-control-lg ml-auto mr-auto" type="text" autocomplete="off" autofocus
+								placeholder="First Name" name="first" value="{{ user.first_name }}"></span>
+						</div>
+						<div class="form-group form-text h3">
+							<span><input class="form-control form-control-lg ml-auto mr-auto" type="text" autocomplete="off" autofocus
+									placeholder="Last Name" name="last" value="{{ user.last_name }}"></span>
+						</div>
+						<div class="form-group form-text h4">
+							<input class="form-control form-control-lg ml-auto mr-auto" type="email" autocomplete="off" autofocus
+								placeholder="E-mail" aria-describedby="emailHelp" name="email" value="{{ user.email }}">
+						</div>
+						<button class="form-control form-control-lg btn btn-outline-success btn-lg mt-3" type="submit" name="button">Update Details</button>
+					</form>
+				{% else %}
+					<h4><strong>First Name : </strong>{{ user.first_name }}</h4>
+					<h4><strong>Last Name : </strong>{{ user.last_name }}</h4>
+					<h4><strong>E-mail : </strong> {{ user.email }}</h4>
+				{% endif %}
+			</div>
+			<span class="col-md-4" style="float: right;"><img src="https://img.icons8.com/bubbles/200/000000/check-female.png" /></span>
+		</div>
+	</div>
+{% endblock %}

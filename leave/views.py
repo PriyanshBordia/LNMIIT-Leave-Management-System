@@ -1,11 +1,13 @@
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls.base import reverse
 
-from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views.decorators.http import require_http_methods
 
 from .models import Person, Application
-from .forms import PersonForm, ApplicationForm
+from .forms import UserForm, PersonForm, ApplicationForm
 
 # Create your views here.
 
@@ -47,15 +49,38 @@ def status(request):
 # def applications(request):
 # 	pending_applications = Application.objects.all(state=Application.PENDING)
 
-
+@login_required
 @require_http_methods(["GET", "POST"])
 def details(request):
 	return render(request, 'leave/details.html', context={})
 
 @login_required
+def update(request):
+	user_id = request.user.id
+	form = UserForm()
+	if request.POST:
+		if form.is_valid():
+			form.save()
+			return render(request, 'leave/user.html', context={'user': user})
+		else:
+			return render(request, 'leave/user.html', context={'user': user})
+	return HttpResponseRedirect(reverse('user', args=(user_id, )))
+
+
+@login_required
+def user(request, user_id):
+	try:
+		user = User.objects.get(pk=user_id)
+		return render(request, 'leave/user.html', context={"user": user})
+	except User.DoesNotExist:
+		return render(request, 'leave/error.html', context={"message": "User Doesn't Exist!!", "type": "Value DoesNotExist!!", "link": "users"})
+
+
+@login_required
 def users(request):
 	users = User.objects.all()
 	return render(request, 'leave/users.html', context={'users': users})
+
 
 @login_required
 def error(request):
