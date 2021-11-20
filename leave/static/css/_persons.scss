@@ -1,0 +1,13 @@
+.persons {
+
+	margin: 2rem auto 2rem auto;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+
+	&__grid {
+
+		border: .125rem solid $LightestSlate;
+		background-color: $LightNavy;
+	}
+}

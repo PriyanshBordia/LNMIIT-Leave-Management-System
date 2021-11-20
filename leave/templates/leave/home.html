@@ -1,0 +1,56 @@
+<!-- "templates/leave/home.html" -->
+{% extends "leave/base.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block head %}
+	{% load static %}
+	{% load bootstrap4 %}
+	{% load fontawesome_5 %}
+	{% load humanizelib %}
+{% endblock %}
+
+{% block body %}
+	<div class="container container-fluid text-center">
+		<div class="justify-content-center">
+    		{% if user.is_authenticated %}
+				<img src="https://img.icons8.com/bubbles/200/000000/herkules-poirot.png" />
+				<br>
+                <div class="home-head h2">
+                    Hi! <span id="username">{{ user.username }}</span>, <br>
+                    Welcome Back :)
+                </div>
+				<br>
+				<div class="row">
+					<div class="col-md-12">
+						<a href="{% url 'application' %}" role="button">
+							<button class="form-control form-control-lg btn btn-outline-light btn-lg">New Application.</button>
+						</a>
+					</div>
+				</div>
+    		{% else %}
+                <img src="https://img.icons8.com/bubbles/200/000000/home-page.png" />
+				<br>
+                <div class="home-head h2">
+                    <span id="username">Welcome</span>, <br>
+                    Register & Log In to enter LNMIIT LNM.
+                </div>
+				<br>
+				<div class="row">
+					<div class="col-md-6">
+						<a href="{% url 'login' %}" role="button">
+							<button class="form-control form-control-lg btn btn-outline-warning btn-lg">Log In</button>
+						</a>
+					</div>
+					<div class="col-md-6">
+						<a href="{% url 'signup' %}" role="button">
+							<button class="form-control form-control-lg btn btn-outline-danger btn-lg">Register</button>
+						</a>
+					</div>
+				</div>
+			{% endif %}
+        </div>
+    </div>
+{% endblock %}

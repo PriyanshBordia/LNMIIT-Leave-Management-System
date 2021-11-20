@@ -8,6 +8,7 @@ class PersonForm(forms.ModelForm):
 		model = Person
 		fields = '__all__'
 
+
 class ApplicationForm(forms.ModelForm):
 
 	class Meta:
