@@ -1,5 +1,4 @@
 <!-- "templates/leave/error.html" -->
-
 {% extends "leave/base.html" %}
 
 {% block title %}
@@ -22,19 +21,11 @@
 					{{ message }}
 				</div>
 				<div class="error__grid__a">
-					{% if link == 'search' %}
-						<a href="{% url link 'article' %}">
-							<button class="form-control form-control-lg btn btn-outline-danger btn-lg">
-								Search
-							</button>
-						</a>
-					{% else %}
-						<a href="{% url link %}">
-							<button class="form-control form-control-lg btn btn-outline-danger btn-lg">
-								Go. Back
-							</button>
-						</a>
-					{% endif %}
+					<a href="{% url link %}">
+						<button class="form-control form-control-lg btn btn-outline-danger btn-lg">
+							Go. Back
+						</button>
+					</a>
 				</div>
 			</error>
 		</div>

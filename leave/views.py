@@ -44,8 +44,8 @@ def application(request):
 def status(request):
 	return render(request, 'leave/status.html', context={})
 
-def applications(request):
-	pending_applications = Application.objects.all(state=Application.PENDING)
+# def applications(request):
+# 	pending_applications = Application.objects.all(state=Application.PENDING)
 
 
 @require_http_methods(["GET", "POST"])
@@ -59,4 +59,4 @@ def users(request):
 
 @login_required
 def error(request):
-	return render(request, 'leave/error.html', context={})
+	return render(request, 'leave/error.html', context={"message": "Incompatible DataType.!!", "type": "Type Error", "link": "home"})

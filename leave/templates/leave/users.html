@@ -1,0 +1,61 @@
+<!-- templates/leave/users.html -->
+{% extends 'leave/base.html' %}
+
+{% block title %}
+    Users
+{% endblock %}
+
+{% block head %}
+	{% load static %}
+{% endblock %}
+
+{% block body %}
+	<div class="conatainer container-fluid text-center" style="max-width: 1000px; margin: auto;">
+		{% if users|length > 0 %}
+			<div class="row">
+				<div class="col-md-4">
+					<div class="row">
+						<div class="col-md-6">
+							<img src="https://img.icons8.com/bubbles/200/000000/clever-man.png" />
+						</div>
+						<div class="col-md-6">
+							<img src="https://img.icons8.com/bubbles/200/000000/clever-woman.png" />
+						</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<h2> Users </h2>
+					<hr>
+					<table class="center">
+						<thead>
+							<tr>
+								<th>MPUID</th>
+								<th>Username</th>
+								<th>Details</th>
+							<tr>
+						</thead>
+					
+						<tbody>
+							{% for user in users %}
+							<tr>
+								<td>{{ user.id }}</td>
+								<td>{{ user.username }}</td>
+								<td><a class="form-control form-control-lg btn btn-outline-info btn-lg " href="{% url 'user' user.id %}" role="button">Show</a></td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		{% else %}
+			<div class="container container-fluid">
+				<div class="row justify-content-center">
+					<div class="alert alert-info" role="alert">No Users.</div>
+					<a href="{% url 'login' %}">
+						<button class="form-control form-control-lg btn btn-outline-warning btn-lg">Add User.</button>
+					</a>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
