@@ -52,11 +52,11 @@ def applications(request):
 def details(request):
 	return render(request, 'leave/details.html', context={})
 
-
+@login_required
 def users(request):
 	users = User.objects.all()
 	return render(request, 'leave/users.html', context={'users': users})
 
-
+@login_required
 def error(request):
 	return render(request, 'leave/error.html', context={})
