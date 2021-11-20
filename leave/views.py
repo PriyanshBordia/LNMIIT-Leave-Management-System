@@ -46,8 +46,6 @@ def application(request):
 def status(request):
 	return render(request, 'leave/status.html', context={})
 
-# def applications(request):
-# 	pending_applications = Application.objects.all(state=Application.PENDING)
 
 @login_required
 @require_http_methods(["GET", "POST"])

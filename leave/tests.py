@@ -27,7 +27,7 @@ class UrlsTestCase(TestCase):
 		self.assertEquals(resolve(url).func, views.details)
 	
 	def test_url_user(self):
-		url = reverse('user')
+		url = reverse('user', args=[1])
 		self.assertEquals(resolve(url).func, views.user)
 
 	def test_url_users(self):
@@ -42,7 +42,7 @@ class UrlsTestCase(TestCase):
 class ViewsTestCase(TestCase):
 
 	def setUp(self):
-		self.client.login(username='test', password='test'})
+		self.client.login(username='test', password='test')
 
 	def test_view_status_code_home(self):
 		response = self.client.get(reverse('home'))
