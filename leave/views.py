@@ -38,7 +38,7 @@ def application(request):
 		if application.is_valid():
 			application.save()
 			send_application_mail(application)
-			return render(request, 'leave/application.html', context={'form': application})
+			return render(request, 'leave/details.html', context={'form': application})
 		else:
 			return render(request, 'leave/application.html', context={'form': application})
 	return render(request, 'leave/application.html', context={'form': application})
@@ -52,8 +52,13 @@ def status(request):
 @login_required
 @require_http_methods(["GET", "POST"])
 def details(request):
-	person = Person.objects.get(user_id=request.user.id)
-	return render(request, 'leave/details.html', context={'person': person})
+	try:
+		person = Person.objects.get(user_id=request.user.id)
+		applications = Application.objects.filter(person_id=person.id)
+		return render(request, 'leave/details.html', context={'person': person, 'applications': applications})
+	except Person.DoesNotExist:
+		return render(request, 'leave/error.html', context={})
+
 
 @login_required
 def update(request):

@@ -8,9 +8,10 @@ from django.core.mail import send_mail
 def send_application_mail(application):
 	try:
 		subject = 'Leave Application'
+		from_email = 'LMS - The LNMIIT'
 		recipient_list = ['19ucs257@lnmitt.ac.in']
 		html_message = '<h1>Leave Application</h1>'
-		send_mail(subject=subject, message=application, recipient_list=recipient_list, html_message=html_message)
+		send_mail(subject=subject, message=application, from_email=from_email, recipient_list=recipient_list, html_message=html_message)
 	except Exception as e:
 		print(e)
 
