@@ -2,12 +2,13 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls.base import reverse
 
+from utils.utility import send_application_mail
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.http import require_http_methods
 
-from .models import Person, Application
-from .forms import UserForm, PersonForm, ApplicationForm
+from .models import Application, Person
+from .forms import UserForm, ApplicationForm, PersonForm 
 
 # Create your views here.
 
@@ -17,16 +18,16 @@ def home(request):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-def person(request):
+def newPerson(request):
 	person = PersonForm()
 	if request.method == 'POST':
 		person = PersonForm(request.POST)
 		if person.is_valid():
 			person.save()
-			return render(request, 'leave/person.html', context={'form': person})
+			return render(request, 'leave/details.html', context={'form': person})
 		else:
-			return render(request, 'leave/person.html', context={'form': person})
-	return render(request, 'leave/person.html', context={'form': person})
+			return render(request, 'leave/newPerson.html', context={'form': person})
+	return render(request, 'leave/newPerson.html', context={'form': person})
 
 
 @require_http_methods(["GET", "POST"])
@@ -36,6 +37,7 @@ def application(request):
 		application = ApplicationForm(request.POST)
 		if application.is_valid():
 			application.save()
+			send_application_mail(application)
 			return render(request, 'leave/application.html', context={'form': application})
 		else:
 			return render(request, 'leave/application.html', context={'form': application})
@@ -50,7 +52,8 @@ def status(request):
 @login_required
 @require_http_methods(["GET", "POST"])
 def details(request):
-	return render(request, 'leave/details.html', context={})
+	person = Person.objects.get(user_id=request.user.id)
+	return render(request, 'leave/details.html', context={'person': person})
 
 @login_required
 def update(request):

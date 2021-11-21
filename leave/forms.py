@@ -22,4 +22,4 @@ class ApplicationForm(forms.ModelForm):
 
 	class Meta:
 		model = Application
-		fields = '__all__'
+		fields = ['start_date', 'end_date', 'hasClasses', 'rescheduled_date', 'comments']

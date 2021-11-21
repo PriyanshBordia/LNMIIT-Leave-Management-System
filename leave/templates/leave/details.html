@@ -13,11 +13,57 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container container-fluid">
+	<div class="person">
 		<div class="row">
 			<div class="col-md-4">
-				
+				<div class="person__grid">
+					<img src="https://img.icons8.com/bubbles/200/000000/iphone-spinner.png" />
+					<p class="person__grid__name">{{ person.first_name }} {{ person.last_name }}</p>
+					<p class="person__grid__username">{{ person.username }} </p>
+					<p class="person__grid__email"><i class="fas fa-envelope"></i> {{ person.email }} </p>
+					<span>
+						<p class="person__grid__department"><i class="fas fa-envelope"></i> {{ person.department }} </p>
+						<p class="person__grid__office_no"><i class="fas fa-phone-alt"></i> {{ person.office_no }} </p>
+					</span>
+					<p class="person__grid__leave_count"><i class="far fa-address-card"></i> {{ person.leave_count }}</p>
+					<p class="person__grid__faculty_id "><i class="far fa-address-card"></i> {{ person.faculty_id }} </p>
+				</div>
+			</div>
+			<div class="col-md-8">
+				{% if applications|length > 0 %}
+					<div class="application__rented">
+						<table class="center">
+							<thead>
+								<tr>
+									<th>UAID</th>
+									<th>State</th>
+								<tr>
+							</thead>
+							<tbody>
+								{% for application in applications %}
+									<tr>
+										<td>{{ application.id }}</td>
+										<td>{{ article.state }}</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+						</div>
+				{% else %}
+					<div class="alert alert-info" role="alert">No Application.</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
 {% endblock %}
+
+<!-- <div class="row mt-0 mb-0 pb-0">
+	<div class="col-md-8 pb-0">
+		<p class="text-left pt-auto pr-auto pb-0 pl-1"><small class="text-muted">Last Updated
+				{{ person.updated_at|naturaltime }}</small></p>
+	</div>
+	<div class="col-md-4 pb-0">
+		<p class="text-right pr-1 pt-0 pb-0 pl-auto"><small
+				class="text-muted">{{ person.created_at|naturaltime }}</small></p>
+	</div>
+</div> -->
