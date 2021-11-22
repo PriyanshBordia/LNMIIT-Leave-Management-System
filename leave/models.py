@@ -1,6 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.utils.text import slugify
+from django.core.validators import MinValueValidator, MinLengthValidator
 from django.db.models.fields import SlugField
+
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -43,14 +46,14 @@ class Person(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='person')
 
 	faculty_id = models.CharField(max_length=10, unique=True)
-	leave_count = models.IntegerField(default=22)
-	department = models.CharField(max_length=3, choices=DEPARTMENT, default='CSE')
+	leave_count = models.IntegerField(validators=[MinValueValidator(0)], default=22, blank=False, null=False)
+	department = models.CharField(max_length=3, choices=DEPARTMENT, blank=False, null=False, default='CSE')
 
-	first_name = models.CharField(max_length=50, blank=False, null=False)
+	first_name = models.CharField(max_length=50, validators=[MinLengthValidator(1)], blank=False, null=False)
 	last_name = models.CharField(max_length=50, blank=True, null=False)
 
-	email = models.EmailField(blank=False, null=False)
-	office_no = models.IntegerField(blank=False, null=False, default='00')
+	email = models.EmailField(blank=False, null=False, unique=True)
+	office_no = models.IntegerField(blank=False, null=False, default='7X')
 
 	role = models.CharField(max_length=5, choices=PERSON_ROLES, default='F')
 
@@ -87,7 +90,7 @@ class Application(models.Model):
 		('R', 'Rejected'),
 	)
 
-	person = models.ForeignKey(Person, on_delete=models.CASCADE, default=1)
+	person = models.ForeignKey(Person, on_delete=models.CASCADE)
 	status = models.CharField(max_length=1, choices=APPLICATION_STATUS, default='P')
 
 	start_date = models.DateField(blank=False, null=False)
@@ -96,7 +99,7 @@ class Application(models.Model):
 	hasClasses = models.BooleanField(blank=False, null=False, default=False)
 	rescheduled_date = models.DateField(blank=True, null=True)
 
-	up_next = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='up_next', default=1, blank=True, null=False)
+	up_next = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='up_next')
 	comments = models.TextField(blank=True, null=False)
 
 	updated_at = models.DateTimeField(auto_now=True)
