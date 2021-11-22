@@ -5,20 +5,20 @@ from django.db.models.fields import SlugField
 # Create your models here.
 
 class Person(models.Model):
-	DR = 'Director'
-	DOAA = 'Dean of Academic Affairs'
-	DOFA = 'Dean of Faculty Affairs'
-	DOSA = 'Dean of Student Affairs'
-	HOD = 'Head of Department'
-	F = 'Faculty'
-	VF = 'Visiting Faculty'
+	DIRECTOR = 'DR'
+	DEAN_OF_ACADEMIC_AFFAIRS = 'DOAA'
+	DEAN_OF_FACULTY_AFFAIRS = 'DOFA'
+	DEAN_OF_STUDENT_AFFAIRS = 'DOSA'
+	HOD = 'HEAD_OF_DEPARTMENT'
+	FACULTY = 'F'
+	VISITING_FACULTY = 'VF'
 
-	CSE = 'Computer Science and Engineering'
-	ECE = 'Electronics and Communication Engineering'
-	ME = 'Mechanical-Mechatronics Engineering'
-	HSS = 'Humanities and Social Sciences'
-	MH =  'Mathematics'
-	PH = 'Physics'
+	COMPUTER_SCIENCE_AND_ENGINEERING = 'CSE' 
+	ELECTRONICS_AND_COMMUNICATION_ENGINEERING = 'ECE'
+	MECHANICAL_AND_MECHATRONICS_ENGINEERING = 'ME'
+	HUMANITIES_AND_SOCIAL_SCIENCES = 'HSS' 
+	MATHEMATICS = 'MH'
+	PHYSICS = 'PH'
 
 	PERSON_ROLES = (
 		('DR', 'Director'),
@@ -111,6 +111,6 @@ class Application(models.Model):
 		return self.person is not None and self.person.is_valid() and self.start_date is not None and self.end_date is not None and self.start_date < self.end_date
 		
 	def __str__(self):
-		return f'{self.id}. {self.person.first_name} {self.person.last_name} {self.status}'
+		return f'{self.id}. {self.person.first_name} {self.person.last_name} - {self.status}'
 
 
