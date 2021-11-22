@@ -82,10 +82,13 @@ class Application(models.Model):
 
 	# slug = models.SlugField(unique=True)
 
+	class Meta:
+		ordering = ['start_date', 'end_date']
+
 	def is_valid(self):
 		return self.person is not None and self.person.is_valid() and self.start_date is not None and self.end_date is not None and self.start_date < self.end_date
 		
 	def __str__(self):
-		return f'{self.id}. {self.person.first_name} {self.person.last_date} {self.status}'
+		return f'{self.id}. {self.person.first_name} {self.person.last_name} {self.status}'
 
 

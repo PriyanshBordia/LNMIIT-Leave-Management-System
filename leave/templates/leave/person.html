@@ -1,8 +1,8 @@
-<!-- "templates/leave/details.html" -->
+<!-- "templates/leave/person.html" -->
 {% extends "leave/base.html" %}
 
 {% block title %}
-	Profile
+	Person
 {% endblock %}
 
 {% block head %}
@@ -19,36 +19,40 @@
 				<div class="person__grid">
 					<img src="https://img.icons8.com/bubbles/200/000000/iphone-spinner.png" />
 					<p class="person__grid__name">{{ person.first_name }} {{ person.last_name }}</p>
-					<p class="person__grid__username">{{ person.username }} </p>
+					<p class="person__grid__username">{{ request.user.username }} </p>
 					<p class="person__grid__email"><i class="fas fa-envelope"></i> {{ person.email }} </p>
 					<span>
 						<p class="person__grid__department"><i class="fas fa-envelope"></i> {{ person.department }} </p>
-						<p class="person__grid__office_no"><i class="fas fa-phone-alt"></i> {{ person.office_no }} </p>
+						<p class="person__grid__office_no">Office No.</i> {{ person.office_no }} </p>
 					</span>
-					<p class="person__grid__leave_count"><i class="far fa-address-card"></i> {{ person.leave_count }}</p>
-					<p class="person__grid__faculty_id "><i class="far fa-address-card"></i> {{ person.faculty_id }} </p>
+					<p class="person__grid__leave_count">Leave Count: </i> {{ person.leave_count }}</p>
+					<p class="person__grid__faculty_id ">Employee Id: </i> {{ person.faculty_id }} </p>
 				</div>
 			</div>
 			<div class="col-md-8">
 				{% if applications|length > 0 %}
-					<div class="application__rented">
+					<div class="application">
 						<table class="center">
 							<thead>
 								<tr>
 									<th>UAID</th>
-									<th>State</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Status</th>
 								<tr>
 							</thead>
 							<tbody>
 								{% for application in applications %}
 									<tr>
 										<td>{{ application.id }}</td>
-										<td>{{ article.state }}</td>
+										<td>{{ application.start_date }}</td>
+										<td>{{ application.end_date }}</td>
+										<td>{{ application.get_status_display }}</td>
 									</tr>
 								{% endfor %}
-								</tbody>
-							</table>
-						</div>
+							</tbody>
+						</table>
+					</div>
 				{% else %}
 					<div class="alert alert-info" role="alert">No Application.</div>
 				{% endif %}

@@ -24,10 +24,21 @@ def newPerson(request):
 		person = PersonForm(request.POST)
 		if person.is_valid():
 			person.save()
-			return render(request, 'leave/details.html', context={'form': person})
+			return render(request, 'leave/person.html', context={'form': person})
 		else:
 			return render(request, 'leave/newPerson.html', context={'form': person})
 	return render(request, 'leave/newPerson.html', context={'form': person})
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def person(request):
+	try:
+		person = Person.objects.get(user_id=request.user.id)
+		applications = Application.objects.filter(person=person)
+		return render(request, 'leave/person.html', context={'person': person, 'applications': applications})
+	except Person.DoesNotExist:
+		return render(request, 'leave/error.html', context={})
 
 
 @require_http_methods(["GET", "POST"])
@@ -36,9 +47,9 @@ def application(request):
 	if request.method == 'POST':
 		application = ApplicationForm(request.POST)
 		if application.is_valid():
+			send_application_mail(request.user, application)
 			application.save()
-			send_application_mail(application)
-			return render(request, 'leave/details.html', context={'form': application})
+			return HttpResponseRedirect(reverse('person', args=()))
 		else:
 			return render(request, 'leave/application.html', context={'form': application})
 	return render(request, 'leave/application.html', context={'form': application})
@@ -47,17 +58,6 @@ def application(request):
 @require_http_methods(["GET", "POST"])
 def status(request):
 	return render(request, 'leave/status.html', context={})
-
-
-@login_required
-@require_http_methods(["GET", "POST"])
-def details(request):
-	try:
-		person = Person.objects.get(user_id=request.user.id)
-		applications = Application.objects.filter(person_id=person.id)
-		return render(request, 'leave/details.html', context={'person': person, 'applications': applications})
-	except Person.DoesNotExist:
-		return render(request, 'leave/error.html', context={})
 
 
 @login_required

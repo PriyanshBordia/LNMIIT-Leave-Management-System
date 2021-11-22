@@ -1,34 +1,21 @@
 import os
-import json
-import requests
-import telegram
 from django.core.mail import send_mail
 
+from .alerts import publish_on_telegram_channel
 
-def send_application_mail(application):
+def send_application_mail(user, application):
 	try:
 		subject = 'Leave Application'
-		from_email = 'LMS - The LNMIIT'
-		recipient_list = ['19ucs257@lnmitt.ac.in']
-		html_message = '<h1>Leave Application</h1>'
-		send_mail(subject=subject, message=application, from_email=from_email, recipient_list=recipient_list, html_message=html_message)
+		name = user.person.first_name + ' ' + user.person.last_name
+		print(name)
+		message = name + ' wants to take a leave.\n'
+		message += 'From ' + str(application.cleaned_data['start_date']) + ' to ' + str(application.cleaned_data['end_date'])
+		from_email = 'Team LNMIIT Leave Management System'
+		recipient_list = ['19ucs257@lnmiit.ac.in']
+		html_message = '<h3>' + message + '</h3>'
+		send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list, html_message=html_message)
 	except Exception as e:
-		print(e)
-
-def custom_alert_slack(message):
-	text = ""
-	text = "%s" % message
-	requests.post(os.getenv('SLACK_WEBHOOK'), data=json.dumps({"text": text}), headers={'Content-type': 'application/json'})
-
-def publish_on_telegram_channel(chat_id, message, token=None, image=None):
-	if not token:
-		token = os.getenv('TelegramBotsToken')
-	bot = telegram.Bot(token=token)
-	if image is None:
-		bot.send_message(chat_id=chat_id, text=message, parse_mode='HTML', disable_web_page_preview="true")
-	else:
-		bot.send_photo(chat_id=chat_id, photo=open(image, 'rb'), caption=message, parse_mode='HTML', disable_web_page_preview="true")
-
+		publish_on_telegram_channel(chat_id=int(os.getenv('TelegramChannel')), message=str(e))
 
 #  CHARSET = 'utf-8'
 #     body_html = ("""<html>
