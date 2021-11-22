@@ -12,6 +12,7 @@ class UserForm(forms.ModelForm):
 		fields = '__all__'
 		# ['first_name', 'last_name', 'email', 'username', 'password']
 
+
 class PersonForm(forms.ModelForm):
 
 	class Meta:
@@ -36,6 +37,9 @@ class ApplicationForm(forms.ModelForm):
 		# if start_date < datetime.date or end_date < datetime.date or rescheduled_date < datetime.date.now() or start_date > end_date or rescheduled_date >= start_date or rescheduled_date <= end_date:
 			# raise forms.ValidationError('Invalid Date')
 		return self.cleaned_data
+	
+	def save(self, commit=True):
+		return super(ApplicationForm, self).save(commit=commit)
 
 	class Meta:
 		model = Application

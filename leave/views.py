@@ -41,53 +41,66 @@ def person(request):
 		return render(request, 'leave/error.html', context={})
 
 
+@login_required
 @require_http_methods(["GET", "POST"])
 def application(request):
 	application = ApplicationForm()
 	if request.method == 'POST':
 		application = ApplicationForm(request.POST)
 		if application.is_valid():
-			application.save()
-			person = Person.objects.get(pk=request.user.person.id)
-			application = Application.objects.filter(person=person)[0]
-			up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_DEPARTMENT)[0]
-			print(up_next)
-			application.up_next = up_next
-			recipient_list = ['19ucs257@lnmiit.ac.in', str(up_next.email)]
-			send_application_mail(person, recipient_list, application)
-			return HttpResponseRedirect(reverse('person', args=()))
+			try:
+				application.save()
+				person = Person.objects.get(pk=request.user.person.id)
+				if Application.objects.filter(person=person).exists():
+					application = Application.objects.filter(person=person)[0]
+				up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_DEPARTMENT)[0]
+				application.person = person
+				application.up_next = up_next
+				application.save()
+				recipient_list = ['19uec117@lnmiit.ac.', str(up_next.email)]
+				send_application_mail(person, recipient_list, application)
+				return HttpResponseRedirect(reverse('person', args=()))
+			except Person.DoesNotExist:
+				return render(request, 'leave/error.html', context={})
 		else:
 			return render(request, 'leave/application.html', context={'form': application})
 	return render(request, 'leave/application.html', context={'form': application})
 
 
+@login_required
 @require_http_methods(["GET", "POST"])
 def status(request):
 	# try:
 	applications = Application.objects.filter(up_next_id=request.user.person.id, status='P').order_by('-created_at')
 	return render(request, 'leave/status.html', context={'applications': applications})
 	# except:
+	# 	return render(request, 'leave/error.html', context={})
 
+
+@login_required
+@require_http_methods(["GET", "POST"])
 def approve(request, application_id):
 	try:
 		application = Application.objects.get(pk=application_id)
 		try:
-			up_next = Person.objects.filter(role='DOFA')[0]
-			if application.up_next.role == 'DOFA':
-				up_next = Person.objects.filter(role='DR')[0]
-			else:
+			if application.up_next.role == Person.DEAN_OF_FACULTY_AFFAIRS:
+				up_next = Person.objects.filter(role=Person.DIRECTOR)[0]
+			elif application.up_next.role == Person.DIRECTOR:
 				application.status = Application.APPROVED
 				up_next = Person.objects.get(pk=application.person.id)
+			else:
+				up_next = Person.objects.filter(role=Person.DEAN_OF_FACULTY_AFFAIRS)[0]
 			application.up_next = up_next
-			print(up_next.email)
-			recipient_list = ['19ucs257@lnmiit.ac.in', str(up_next.email)]
-			send_application_mail(request.user.person, recipient_list, application)
 			application.save()
+			print(up_next.email)
+			recipient_list = ['19uec117@lnmiit.ac.in', str(up_next.email)]
+			send_application_mail(request.user.person, recipient_list, application)
 		except Person.DoesNotExist:
 			return render(request, 'leave/error.html', context={})
 		return HttpResponseRedirect(reverse('status', args=()))
 	except Application.DoesNotExist:
 		return render(request, 'leave/error.html', context={})
+
 
 @login_required
 def update(request):

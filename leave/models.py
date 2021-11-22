@@ -90,7 +90,7 @@ class Application(models.Model):
 		('R', 'Rejected'),
 	)
 
-	person = models.ForeignKey(Person, on_delete=models.CASCADE)
+	person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='applicant', default=1)
 	status = models.CharField(max_length=1, choices=APPLICATION_STATUS, default='P')
 
 	start_date = models.DateField(blank=False, null=False)
@@ -99,7 +99,7 @@ class Application(models.Model):
 	hasClasses = models.BooleanField(blank=False, null=False, default=False)
 	rescheduled_date = models.DateField(blank=True, null=True)
 
-	up_next = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='up_next')
+	up_next = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='up_next', default=1)
 	comments = models.TextField(blank=True, null=False)
 
 	updated_at = models.DateTimeField(auto_now=True)
