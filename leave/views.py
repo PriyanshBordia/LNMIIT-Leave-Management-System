@@ -47,8 +47,18 @@ def application(request):
 	if request.method == 'POST':
 		application = ApplicationForm(request.POST)
 		if application.is_valid():
-			send_application_mail(request.user, application)
 			application.save()
+			person = Person.objects.get(pk=request.user.person.id)
+			application = Application.objects.filter(person=person)[0]
+			role = 'HOD'
+			if person.role == 'DOAA' or person.role == 'DOSA':
+				role = 'DOFA'
+			if person.role == 'DOFA':
+				role = 'DR'
+			up_next = Person.objects.filter(department=person.department, role=role)[0]
+			application.up_next = up_next
+			recipient_list = ['19ucs257@lnmiit.ac.in', str(up_next.email)]
+			send_application_mail(person, recipient_list, application)
 			return HttpResponseRedirect(reverse('person', args=()))
 		else:
 			return render(request, 'leave/application.html', context={'form': application})
@@ -57,20 +67,42 @@ def application(request):
 
 @require_http_methods(["GET", "POST"])
 def status(request):
-	return render(request, 'leave/status.html', context={})
+	# try:
+	applications = Application.objects.filter(up_next_id=request.user.person.id, status='P').order_by('-created_at')
+	return render(request, 'leave/status.html', context={'applications': applications})
+	# except:
 
+def approve(request, application_id):
+	try:
+		application = Application.objects.get(pk=application_id)
+		try:
+			up_next = Person.objects.filter(role='DOFA')[0]
+			if application.up_next.role == 'DOFA':
+				up_next = Person.objects.filter(role='DR')[0]
+			else:
+				application.status = Application.APPROVED
+				up_next = Person.objects.get(pk=application.person.id)
+			application.up_next = up_next
+			print(up_next.email)
+			recipient_list = ['19ucs257@lnmiit.ac.in', str(up_next.email)]
+			send_application_mail(request.user.person, recipient_list, application)
+			application.save()
+		except Person.DoesNotExist:
+			return render(request, 'leave/error.html', context={})
+		return HttpResponseRedirect(reverse('status', args=()))
+	except Application.DoesNotExist:
+		return render(request, 'leave/error.html', context={})
 
 @login_required
 def update(request):
-	user_id = request.user.id
 	form = UserForm()
 	if request.POST:
 		if form.is_valid():
 			form.save()
-			return render(request, 'leave/user.html', context={'user': user})
+			return HttpResponseRedirect(reverse('user', args=(request.user.id, )))
 		else:
-			return render(request, 'leave/user.html', context={'user': user})
-	return HttpResponseRedirect(reverse('user', args=(user_id, )))
+			return render(request, 'leave/user.html', context={'form': form})
+	return HttpResponseRedirect(reverse('user', args=(request.user.id, )))
 
 
 @login_required

@@ -1,0 +1,58 @@
+<!-- templates/leave/status.html -->
+{% extends 'leave/base.html' %}
+
+{% block title %}
+    Status {{ applications|length }}
+{% endblock %}
+
+{% block head %}
+	{% load static %}
+{% endblock %}
+
+{% block body %}
+	<div class="conatainer container-fluid text-center" style="margin: auto;">
+		{% if applications|length > 0 %}
+			<div class="row">
+				<div class="col-md-12">
+					<h2> Applications </h2>
+					<hr>
+					<table class="center">
+						<thead>
+							<tr>
+								<th>Faculty Id</th>
+								<th>Name</th>
+								<th>Start Date</th>
+								<th>End Date</th>
+								<th>Rescheduled Date</th>
+								<th>Comments</th>
+								<th>Action</th>
+							<tr>
+						</thead>
+					
+						<tbody>
+							{% for application in applications %}
+								<tr>
+									<td>{{ application.person.faculty_id }}</td>
+									<td><span>{{ application.person.first_name }} {{ application.person.last_name }}</span></td>
+									<td>{{ application.start_date }}</td>
+									<td>{{ application.end_date }}</td>
+									<td>{{ application.reschuled_date }}</td>
+									<td>{{ application.comments }}</td>
+									<td><a class="form-control form-control-lg btn btn-outline-success btn-lg " href="{% url 'approve' application.id %}" role="button">Approve</a></td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		{% else %}
+			<div class="row">
+				<div class="col-md-12">
+					<div class="alert alert-info" role="alert"> 
+						There are no pending applications to approve. 
+					</div>
+				</div>
+			</div>
+		{% endif %}		
+	</div>
+{% endblock %}

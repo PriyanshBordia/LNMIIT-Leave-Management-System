@@ -5,10 +5,26 @@ from django.db.models.fields import SlugField
 # Create your models here.
 
 class Person(models.Model):
+	DR = 'Director'
+	DOAA = 'Dean of Academic Affairs'
+	DOFA = 'Dean of Faculty Affairs'
+	DOSA = 'Dean of Student Affairs'
+	HOD = 'Head of Department'
+	F = 'Faculty'
+	VF = 'Visiting Faculty'
+
+	CSE = 'Computer Science and Engineering'
+	ECE = 'Electronics and Communication Engineering'
+	ME = 'Mechanical-Mechatronics Engineering'
+	HSS = 'Humanities and Social Sciences'
+	MH =  'Mathematics'
+	PH = 'Physics'
 
 	PERSON_ROLES = (
 		('DR', 'Director'),
-		('DN', 'Dean'),
+		('DOAA', 'Dean of Academic Affairs'),
+		('DOFA', 'Dean of Faculty Affairs'),
+		('DOSA', 'Dean of Student Affairs'),
 		('HOD', 'Head of Department'),
 		('F', 'Faculty'),
 		('VF', 'Visiting Faculty'),
@@ -60,6 +76,11 @@ class Person(models.Model):
 
 
 class Application(models.Model):
+
+	PENDING = 'P'
+	APPROVED = 'A'
+	REJECTED = 'R'
+
 	APPLICATION_STATUS = (
 		('P', 'Pending'),
 		('A', 'Approved'),
@@ -75,6 +96,7 @@ class Application(models.Model):
 	hasClasses = models.BooleanField(blank=False, null=False, default=False)
 	rescheduled_date = models.DateTimeField(blank=True, null=True)
 
+	up_next = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='up_next', default=1, blank=True, null=False)
 	comments = models.TextField(blank=True, null=False)
 
 	updated_at = models.DateTimeField(auto_now=True)
