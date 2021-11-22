@@ -2,6 +2,8 @@ import datetime
 from django import forms
 from django.contrib.auth.models import User
 
+from bootstrap_datepicker_plus import DateTimePickerInput
+
 from .models import Application, Person
 
 
@@ -21,10 +23,10 @@ class PersonForm(forms.ModelForm):
 
 class ApplicationForm(forms.ModelForm):
 
-	start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-	end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+	start_date = forms.DateField(widget=DateTimePickerInput())
+	end_date = forms.DateField(widget=DateTimePickerInput())
 
-	rescheduled_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+	rescheduled_date = forms.DateField(widget=DateTimePickerInput())
 
 	def clean(self):
 		super(ApplicationForm, self).clean()

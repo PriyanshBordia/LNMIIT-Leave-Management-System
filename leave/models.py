@@ -9,7 +9,7 @@ class Person(models.Model):
 	DEAN_OF_ACADEMIC_AFFAIRS = 'DOAA'
 	DEAN_OF_FACULTY_AFFAIRS = 'DOFA'
 	DEAN_OF_STUDENT_AFFAIRS = 'DOSA'
-	HOD = 'HEAD_OF_DEPARTMENT'
+	HEAD_OF_DEPARTMENT = 'HOD'
 	FACULTY = 'F'
 	VISITING_FACULTY = 'VF'
 
@@ -34,7 +34,7 @@ class Person(models.Model):
 	DEPARTMENT = (
 		('CSE', 'Computer Science and Engineering'),
 		('ECE', 'Electronics and Communication Engineering'),
-		('ME', 'Mechanical-Mechatronics Engineering'),
+		('ME', 'Mechanical and Mechatronics Engineering'),
 		('HSS', 'Humanities and Social Sciences'),
 		('MH', 'Mathematics'),
 		('PH', 'Physics'),
@@ -94,7 +94,7 @@ class Application(models.Model):
 	end_date = models.DateField(blank=False, null=False)
 
 	hasClasses = models.BooleanField(blank=False, null=False, default=False)
-	rescheduled_date = models.DateTimeField(blank=True, null=True)
+	rescheduled_date = models.DateField(blank=True, null=True)
 
 	up_next = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='up_next', default=1, blank=True, null=False)
 	comments = models.TextField(blank=True, null=False)

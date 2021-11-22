@@ -50,12 +50,8 @@ def application(request):
 			application.save()
 			person = Person.objects.get(pk=request.user.person.id)
 			application = Application.objects.filter(person=person)[0]
-			role = 'HOD'
-			if person.role == 'DOAA' or person.role == 'DOSA':
-				role = 'DOFA'
-			if person.role == 'DOFA':
-				role = 'DR'
-			up_next = Person.objects.filter(department=person.department, role=role)[0]
+			up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_DEPARTMENT)[0]
+			print(up_next)
 			application.up_next = up_next
 			recipient_list = ['19ucs257@lnmiit.ac.in', str(up_next.email)]
 			send_application_mail(person, recipient_list, application)

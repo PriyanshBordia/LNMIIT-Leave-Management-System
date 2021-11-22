@@ -8,7 +8,6 @@ def send_application_mail(person, recipient_list, application):
 	try:
 		subject = 'Leave Application'
 		name = person.first_name + ' ' + person.last_name
-		print(name)
 		message = name + ' wants to take a leave.<br>'
 		message += '<p>From ' + str(application.start_date) + ' to ' + str(application.end_date) + '</p><br>'
 		# message += '<p>Reason: ' + application.comments + '</p><br>'

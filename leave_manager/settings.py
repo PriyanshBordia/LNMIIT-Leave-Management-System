@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 	'humanize',
 	'bootstrap4',
 	'fontawesome_5',
+	'bootstrap_datepicker_plus',
 	'django_autoslug',
 	'accounts',
 ]
