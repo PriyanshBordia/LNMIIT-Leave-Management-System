@@ -5,45 +5,39 @@
 	&__grid {
 
 		margin: .8rem .4rem .8rem .4rem;
-		// border: .125rem solid $LightestSlate;
-		background-color: $LightNavy;
+		border: .125rem solid $LightestNavy;
+		background-color: $Navy;
 
-		&__img {
-			
-			margin: 2rem auto 2rem auto;
-			width: 40.625rem; 
-			height: 28.125rem;
-			max-width: 100%;
-			max-height: 100%;
-			border: .25rem solid $LightestNavy;
-	
-			&:hover {
-				border: .25rem solid $LightestSlate;
-			}
-		}
-
-		&__title {
+		&__name {
 
 			margin: 1rem auto 1rem auto;
 		}
 
-		&__desc {
+		&__date {
 
+			margin: 2rem 1rem 2rem 1rem;
+			padding: 2rem auto 2rem auto;
+		}
+
+		&__desc {
+			margin: 1rem auto 1rem auto;
+			padding: 2rem auto 2rem auto;
+		}
+
+		&__comments {
 			margin: 2rem 1rem 2rem 1rem;
 			padding: 2rem auto 2rem auto;
 			height: 12rem;
 			overflow-y: auto;
 			line-height: 1.8rem;
-			background-color: $LightestNavy;
-			border: .125rem solid $LightestSlate;
+			background-color: $LightNavy;
+			border-radius: 3%;
 		}
 
-		&__price {
+		&__up_next {
 
-			padding: .2rem .2rem .2rem .2rem;
-			background-color: $Navy;
-			border: .125rem solid $LightestSlate;
-			border-radius: 1rem;
+			margin: 2rem auto auto 2rem;
+			color: coral;
 		}
 
 		&__btn {
