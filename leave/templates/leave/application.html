@@ -2,7 +2,7 @@
 {% extends "leave/base.html" %}
 
 {% block title %}
-	Application Form
+	Application {{ application.id }}
 {% endblock %}
 
 {% block head %}
@@ -13,27 +13,12 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container container-fluid text-center" style="max-width: 1100px; margin: 2rem auto 2rem auto;">
+	<div class="container container-fluid text-center">
 		<div class="row justify-content-center">
 			<div class="col-md-4">
 				<img src="https://img.icons8.com/bubbles/200/000000/multi-edit.png" />
 			</div>
 			<div class="col-md-8">
-				<form class="form-group" action="{% url 'application' %}" method="post" enctype="multipart/form-data">
-		
-					{% csrf_token %}
-		
-					{% bootstrap_form form layout='horizontal' %}
-		
-					<div class="row mt-5">
-						<div class="col-md-6">
-							{% bootstrap_button "Reset" button_class="form-control form-control-lg btn btn-outline-warning btn-lg" button_type="reset" %}
-						</div>
-						<div class="col-md-6">
-							{% bootstrap_button "Add.!" button_class="form-control form-control-lg btn btn-outline-success btn-lg" button_type="submit" %}
-						</div>
-					</div>
-				</form>
 			</div>
 		</div>
 	</div>

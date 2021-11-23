@@ -45,8 +45,8 @@
             <ul class="navbar-nav mr-3 ml-auto">
 				{% if request.user.is_superuser %}
 					<li class="nav-item dropdown">
-						<div class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Super">
-							<img src="https://img.icons8.com/bubbles/50/000000/verified-account.png" />
+						<div class="nav-link dropdown-toggle" style="color: #c2dde6;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Super">
+							Admin
 						</div>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" role="menu">
 							<a class="dropdown-item" href="{% url 'admin:index' %}">Admin Site</a>
@@ -60,53 +60,44 @@
 					</li>
 				{% endif %}
 				{% if user.is_authenticated %}
-					{% if request.user.person.role != 'F' and request.user.person.role != 'VF' %}
-						<li class="nav-item dropdown">
-							<div class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false" title="Profile">
-								<!-- Status -->
-								<img src="https://img.icons8.com/bubbles/50/000000/stormtrooper.png" alt="BP{{ request.user.person.id }}ID" style="width: 50px; height: 50px; border-radius: 50%;" />
-							</div>
-							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" role="menu">
-								<a class="dropdown-item" href="{% url 'status' %}">Status</a>
-								<!-- <div class="dropdown-divider"></div> -->
-							</div>
-						</li>
-					{% endif %}
 					<li class="nav-item dropdown">
-						<div class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false" title="Profile">
-							<!-- Profile -->
-							<img src="https://img.icons8.com/bubbles/50/000000/stormtrooper.png" alt="BP{{ request.user.person.id }}ID" style="width: 50px; height: 50px; border-radius: 50%;" />
+						<div class="nav-link dropdown-toggle" style="color: #c2dde6;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Profile">
+							Profile
 						</div>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" role="menu">
 							<a class="dropdown-item" href="{% url 'person' %}">Profile</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="{% url 'application' %}">New Application</a>
+							<a class="dropdown-item" href="{% url 'newApplication' %}">New Application</a>
 							<div class="dropdown-divider"></div>
+							{% if request.user.person.role != 'F' and request.user.person.role != 'VF' %}
+								<a class="dropdown-item" href="{% url 'status' %}">Status</a>
+								<a class="dropdown-item" href="{% url 'status' %}">Up-coming</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'status' %}">Approved</a>
+								<a class="dropdown-item" href="{% url 'status' %}">Rejected</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
 							<a class="dropdown-item" href="{% url 'password_reset' %}">Reset password</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
 						</div>
 					</li>
 				{% else %}
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'login' %}" title="Login">
-							<!-- Log In -->
-							<img src="https://img.icons8.com/clouds/50/000000/login-rounded-right.png" />
+					<li class="nav-item" >
+						<a class="nav-link" style="color: #c2dde6;" href="{% url 'login' %}" title="Login">
+							Log In
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'password_reset' %}" title="Reset password">
-							<img src="https://img.icons8.com/bubbles/50/000000/reset.png" />
+						<a class="nav-link" style="color: #c2dde6;" href="{% url 'password_reset' %}" title="Reset password">
+							Reset Password
 						</a>
 					</li>
 				{% endif %}
 				{% if user.is_superuser %}
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'signup' %}">
-							<!-- Register -->
-							<img src="https://img.icons8.com/bubbles/50/000000/export.png" />
+						<a class="nav-link" style="color: #c2dde6;" href="{% url 'signup' %}">
+							Register
 						</a>
 					</li>
 				{% endif %}

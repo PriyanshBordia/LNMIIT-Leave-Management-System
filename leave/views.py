@@ -31,7 +31,7 @@ def newPerson(request):
 
 
 @login_required
-@require_http_methods(["GET", "POST"])
+@require_http_methods(["GET"])
 def person(request):
 	try:
 		person = Person.objects.get(user_id=request.user.id)
@@ -43,7 +43,7 @@ def person(request):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-def application(request):
+def newApplication(request):
 	application = ApplicationForm()
 	if request.method == 'POST':
 		application = ApplicationForm(request.POST)
@@ -57,14 +57,24 @@ def application(request):
 				application.person = person
 				application.up_next = up_next
 				application.save()
-				recipient_list = ['19uec117@lnmiit.ac.', str(up_next.email)]
+				recipient_list = ['19uec117@lnmiit.ac.in', str(up_next.email)]
 				send_application_mail(person, recipient_list, application)
 				return HttpResponseRedirect(reverse('person', args=()))
 			except Person.DoesNotExist:
 				return render(request, 'leave/error.html', context={})
 		else:
-			return render(request, 'leave/application.html', context={'form': application})
-	return render(request, 'leave/application.html', context={'form': application})
+			return render(request, 'leave/newApplication.html', context={'form': application})
+	return render(request, 'leave/newApplication.html', context={'form': application})
+
+
+@login_required
+@require_http_methods(["GET"])
+def application(request, application_id):
+	try:
+		application = Application.objects.get(pk=application_id)
+		return render(request, 'leave/application.html', context={'application': application})
+	except Application.DoesNotExist:
+		return render(request, 'leave/error.html', context={})
 
 
 @login_required
@@ -101,6 +111,14 @@ def approve(request, application_id):
 	except Application.DoesNotExist:
 		return render(request, 'leave/error.html', context={})
 
+
+def reject(request, application_id):
+	try:
+		application = Application.objects.get(pk=application_id)
+		application.status = Application.REJECTED
+		application.save()
+	except Application.DoesNotExist:
+		return render(request, 'leave/error.html', context={})
 
 @login_required
 def update(request):
