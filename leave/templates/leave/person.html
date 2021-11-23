@@ -22,16 +22,16 @@
 					<p class="person__grid__username">{{ request.user.username }} </p>
 					<p class="person__grid__email"><i class="fas fa-envelope"></i> {{ person.email }} </p>
 					<span>
-						<p class="person__grid__department"><i class="fas fa-envelope"></i> {{ person.department }} </p>
+						<p class="person__grid__department"><i class="fas fa-envelope"></i> {{ person.get_department_display }} </p>
 						<p class="person__grid__office_no">Office No.</i> {{ person.office_no }} </p>
 					</span>
 					<p class="person__grid__leave_count">Leave Count: </i> {{ person.leave_count }}</p>
-					<p class="person__grid__faculty_id ">Employee Id: </i> {{ person.faculty_id }} </p>
+					<p class="person__grid__faculty_id">Employee Id: </i> {{ person.faculty_id }} </p>
 				</div>
 			</div>
 			<div class="col-md-8">
 				{% if applications|length > 0 %}
-					<div class="application">
+					<div class="person__grid__application">
 						<table class="center">
 							<thead>
 								<tr>
@@ -39,6 +39,7 @@
 									<th>Start Date</th>
 									<th>End Date</th>
 									<th>Status</th>
+									<th>Details</th>
 								<tr>
 							</thead>
 							<tbody>
@@ -48,6 +49,7 @@
 										<td>{{ application.start_date }}</td>
 										<td>{{ application.end_date }}</td>
 										<td>{{ application.get_status_display }}</td>
+										<td><a class="form-control form-control-lg btn btn-outline-info btn-lg " href="{% url 'application' application.id %}" role="button">Show</a></td>
 									</tr>
 								{% endfor %}
 							</tbody>

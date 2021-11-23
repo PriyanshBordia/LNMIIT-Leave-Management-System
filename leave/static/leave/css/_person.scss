@@ -47,15 +47,7 @@
 			color: $NeonGreen;
 		}
 
-		&__bio {
-			font-size: 1rem;
-		}
-
-		&__email, &__ph_no {
-			font-size: 1rem;
-		}
-
-		&__age, &__gender {
+		&__email, &__office_no, &__department, &__leave_count, &__faculty_id {
 			font-size: 1rem;
 		}
 
@@ -63,14 +55,9 @@
 
 			margin: 1rem auto 1rem auto;
 		}
-
-		&__form {
-
-			margin: 1rem 2rem 1rem 2rem;
-		}
 	}
 
-	&__rented, &__display, &__bookmarked, &__purchased, &__sold {
+	&__applications{
 
 		margin: 1rem auto 1rem auto;
 	}
