@@ -16,7 +16,7 @@ def home(request):
 	return render(request, 'leave/home.html', context={})
 
 
-# @login_required
+@login_required
 @require_http_methods(["GET", "POST"])
 def newPerson(request):
 	person = PersonForm()
@@ -30,7 +30,7 @@ def newPerson(request):
 	return render(request, 'leave/newPerson.html', context={'form': person})
 
 
-# @login_required
+@login_required
 @require_http_methods(["GET"])
 def person(request):
 	try:
@@ -41,7 +41,7 @@ def person(request):
 		return render(request, 'leave/error.html', context={})
 
 
-# @login_required
+@login_required
 @require_http_methods(["GET", "POST"])
 def newApplication(request):
 	application = ApplicationForm()
@@ -67,7 +67,7 @@ def newApplication(request):
 	return render(request, 'leave/newApplication.html', context={'form': application})
 
 
-# @login_required
+@login_required
 @require_http_methods(["GET"])
 def application(request, application_id):
 	try:
@@ -77,7 +77,7 @@ def application(request, application_id):
 		return render(request, 'leave/error.html', context={})
 
 
-# @login_required
+@login_required
 @require_http_methods(["GET", "POST"])
 def status(request):
 	try:
@@ -87,7 +87,7 @@ def status(request):
 		return render(request, 'leave/error.html', context={})
 
 
-# @login_required
+@login_required
 @require_http_methods(["GET", "POST"])
 def approve(request, application_id):
 	try:
@@ -117,7 +117,7 @@ def approve(request, application_id):
 		return render(request, 'leave/error.html', context={})
 
 
-# @login_required
+@login_required
 def reject(request, application_id):
 	try:
 		application = Application.objects.get(pk=application_id)
@@ -128,7 +128,7 @@ def reject(request, application_id):
 		return render(request, 'leave/error.html', context={})
 
 
-# @login_required
+@login_required
 def update(request):
 	form = UserForm()
 	if request.POST:
@@ -140,7 +140,7 @@ def update(request):
 	return HttpResponseRedirect(reverse('user', args=(request.user.id, )))
 
 
-# @login_required
+@login_required
 def user(request, user_id):
 	try:
 		user = User.objects.get(pk=user_id)
@@ -149,12 +149,12 @@ def user(request, user_id):
 		return render(request, 'leave/error.html', context={"message": "User Doesn't Exist!!", "type": "Value DoesNotExist!!", "link": "users"})
 
 
-# @login_required
+@login_required
 def users(request):
 	users = User.objects.all()
 	return render(request, 'leave/users.html', context={'users': users})
 
 
-# @login_required
+@login_required
 def error(request):
 	return render(request, 'leave/error.html', context={"message": "Incompatible DataType.!!", "type": "Type Error", "link": "home"})
