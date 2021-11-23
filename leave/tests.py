@@ -1,7 +1,10 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
 from django.core.management import call_command
-from django.test import Client
+
+from termcolor import cprint
+
+from django.contrib.auth.models import User
 
 from .models import Person, Application
 from . import views
@@ -14,17 +17,37 @@ class UrlsTestCase(TestCase):
 		url = reverse('home')
 		self.assertEquals(resolve(url).func, views.home)
 	
-	def test_url_details(self):
-		url = reverse('details')
-		self.assertEquals(resolve(url).func, views.details)
+	def test_url_newPerson(self):
+		url = reverse('newPerson')
+		self.assertEquals(resolve(url).func, views.newPerson)
+
+	def test_url_person(self):
+		url = reverse('person')
+		self.assertEquals(resolve(url).func, views.person)
 	
+	def test_url_newApplication(self):
+		url = reverse('newApplication')
+		self.assertEquals(resolve(url).func, views.newApplication)
+
 	def test_url_application(self):
-		url = reverse('application')
+		url = reverse('application', args=[1])
 		self.assertEquals(resolve(url).func, views.application)
 	
-	def test_url_details(self):
-		url = reverse('details')
-		self.assertEquals(resolve(url).func, views.details)
+	def test_url_status(self):
+		url = reverse('status')
+		self.assertEquals(resolve(url).func, views.status)
+
+	def test_url_approve(self):
+		url = reverse('approve', args=[1])
+		self.assertEquals(resolve(url).func, views.approve)
+	
+	def test_url_reject(self):
+		url = reverse('reject', args=[1])
+		self.assertEquals(resolve(url).func, views.reject)
+
+	def test_url_update(self):
+		url = reverse('update')
+		self.assertEquals(resolve(url).func, views.update)
 	
 	def test_url_user(self):
 		url = reverse('user', args=[1])
@@ -42,7 +65,10 @@ class UrlsTestCase(TestCase):
 class ViewsTestCase(TestCase):
 
 	def setUp(self):
-		self.client.login(username='test', password='test')
+		u = User.objects.create_user(username='test', password='test')
+		p = Person.objects.create(user=u, faculty_id='1', department=Person.COMPUTER_SCIENCE_AND_ENGINEERING, first_name='test', last_name='test', email='test@lnmiit.ac.in', role=Person.FACULTY)
+		Application.objects.create(person=p, status=Application.PENDING, start_date='2021-11-15', end_date='2021-11-21', hasClasses=True, rescheduled_date='2021-11-21', up_next=p)
+		self.client.post('/account/login/', {'username': 'test', 'password': 'test'})
 
 	def test_view_status_code_home(self):
 		response = self.client.get(reverse('home'))
@@ -53,6 +79,15 @@ class ViewsTestCase(TestCase):
 		self.assertTemplateUsed(response, 'leave/home.html')
 		self.assertTemplateNotUsed(response, 'leave/error.html')
 	
+	def test_view_status_code_newPerson(self):
+		response = self.client.get(reverse('newPerson'))
+		self.assertEquals(response.status_code, 200)
+
+	def test_view_template_used_newPerson(self):
+		response = self.client.get(reverse('newPerson'))
+		self.assertTemplateUsed(response, 'leave/newPerson.html')
+		self.assertTemplateNotUsed(response, 'leave/error.html')
+
 	def test_view_status_code_person(self):
 		response = self.client.get(reverse('person'))
 		self.assertEquals(response.status_code, 200)
@@ -62,23 +97,60 @@ class ViewsTestCase(TestCase):
 		self.assertTemplateUsed(response, 'leave/person.html')
 		self.assertTemplateNotUsed(response, 'leave/error.html')
 
+	def test_view_status_code_newApplication(self):
+		response = self.client.get(reverse('newApplication'))
+		self.assertEquals(response.status_code, 200)
+
+	def test_view_template_used_newApplication(self):
+		response = self.client.get(reverse('newApplication'))
+		self.assertTemplateUsed(response, 'leave/newApplication.html')
+		self.assertTemplateNotUsed(response, 'leave/error.html')
+
 	def test_view_status_code_application(self):
-		response = self.client.get(reverse('application'))
+		response = self.client.get(reverse('application', args=[1]))
 		self.assertEquals(response.status_code, 200)
 
 	def test_view_template_used_application(self):
-		response = self.client.get(reverse('application'))
+		response = self.client.get(reverse('application', args=[1]))
 		self.assertTemplateUsed(response, 'leave/application.html')
 		self.assertTemplateNotUsed(response, 'leave/error.html')
 
-	def test_view_status_code_details(self):
-		response = self.client.get(reverse('details'))
+	def test_view_status_code_status(self):
+		response = self.client.get(reverse('status'))
 		self.assertEquals(response.status_code, 200)	
 
-	def test_view_template_used_details(self):
-		response = self.client.get(reverse('details'))
-		self.assertTemplateUsed(response, 'leave/details.html')
-		# self.assertTemplateNotUsed(response, 'leave/error.html')
+	def test_view_template_used_status(self):
+		response = self.client.get(reverse('status'))
+		self.assertTemplateUsed(response, 'leave/status.html')
+		self.assertTemplateNotUsed(response, 'leave/error.html')
+
+	def test_view_status_code_approve(self):
+		response = self.client.get(reverse('approve', args=[1]))
+		self.assertEquals(response.status_code, 302)	
+
+	def test_view_template_used_approve(self):
+		response = self.client.get(reverse('approve', args=[1]))
+		response = self.client.get(response.url)
+		self.assertTemplateUsed(response, 'leave/status.html')
+		self.assertTemplateNotUsed(response, 'leave/error.html')
+
+	def test_view_status_code_reject(self):
+		response = self.client.get(reverse('reject', args=[1]))
+		self.assertEquals(response.status_code, 302)	
+
+	def test_view_template_used_reject(self):
+		response = self.client.get(reverse('reject', args=[1]))
+		response = self.client.get(response.url)
+		self.assertTemplateUsed(response, 'leave/status.html')
+		self.assertTemplateNotUsed(response, 'leave/error.html')
+
+	def test_view_status_code_user(self):
+		response = self.client.get(reverse('user', args=[1]))
+		self.assertEquals(response.status_code, 200)
+
+	def test_view_template_used_user(self):
+		response = self.client.get(reverse('user', args=[1]))
+		self.assertTemplateUsed(response, 'leave/user.html')
 
 	def test_view_status_code_users(self):
 		self.response = self.client.get(reverse('users'))
@@ -100,5 +172,5 @@ class ViewsTestCase(TestCase):
 # Test for the templates
 
 class TemplatesTestCase(TestCase):
-    def test_validate_templates(self):
-        call_command("validate_templates")
+	def test_validate_templates(self):
+		call_command("validate_templates")

@@ -53,7 +53,7 @@ class Person(models.Model):
 	last_name = models.CharField(max_length=50, blank=True, null=False)
 
 	email = models.EmailField(blank=False, null=False, unique=True)
-	office_no = models.IntegerField(blank=False, null=False, default='7X')
+	office_no = models.IntegerField(blank=False, null=False, default='0000')
 
 	role = models.CharField(max_length=5, choices=PERSON_ROLES, default='F')
 
@@ -72,6 +72,8 @@ class Person(models.Model):
 		return self.role == 'HOD'
 
 	def is_valid(self):
+		if self.email.split('@')[1] != 'lnmiit.ac.in':
+			return False
 		return len(self.first_name) > 0 and self.user is not None and self.leave_count >= 0
 
 	def __str__(self):
