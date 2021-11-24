@@ -4,50 +4,37 @@ from django.core.mail import send_mail
 from .alerts import publish_on_telegram_channel
 
 
-def send_application_mail(person, recipient_list, application):
-	try:
-		subject = 'Leave Application'
-		name = application.person.first_name + ' ' + application.person.last_name
-		message = name + ' wants to take a leave.<br>'
-		message += '<p>From ' + str(application.start_date) + ' to ' + str(application.end_date) + '</p><br>'
-		# message += '<p>Reason: ' + application.comments + '</p><br>'
-		message += '<p>Regards<br>' + 'Team LMS<br>'
-		from_email = 'Team LNMIIT Leave Management System'
-		html_message = '<div>' + message + '</div>'
-		send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list, html_message=html_message)
-	except Exception as e:
-		publish_on_telegram_channel(chat_id=int(os.getenv('TelegramChannel')), message=str(e))
+def get_message(a):
+	message = {}
 
-#  CHARSET = 'utf-8'
-#     body_html = ("""<html>
-#         <head></head>
-#         <body>
-#           <p>%s.</p>
-#         </body>
-#         </html>
-#                     """ % message)
-#     response = client.send_email(
-#         Destination={
-#             'ToAddresses': [
-#                 recipient,
-#             ],
-#         },
-#         Message={
-#             'Body': {
-#                 'Html': {
-#                     'Charset': CHARSET,
-#                     'Data': body_html,
-#                 },
-#                 'Text': {
-#                     'Charset': CHARSET,
-#                     'Data': message,
-#                 },
-#             },
-#             'Subject': {
-#                 'Charset': CHARSET,
-#                 'Data': subject,
-#             },
-#         },
-#         Source=sender,
-#     )
-#     return response
+	m = '<div class="container container-fluid text-center">'
+	m += '<h3>Dear Professor,</h3>'
+
+	message['P'] = f'<div>{a.person.first_name} {a.person.last_name} wants to take a leave.</div>'
+	message['A'] = f'<div>You application dated <b>{a.created_at}</b> has been approved.</div>'
+	message['R'] = f'<div>You application dated <b>{a.created_at}</b> has been rejected by {a.up_next.get_role_display}.</div>'
+
+	m += str(message[a.status])
+	m += '<h2>Application Details</h2>'
+	m += '<div>• From ' + str(a.start_date) + ' to ' + str(a.end_date) + '<br>'
+	m += '• Reason: ' + a.comments + '</div>'
+	m += '<footer>--<br>Regards<br>' + 'Team LMS</footer>'
+	m += '</div>'
+
+	print(m)
+
+	template = '<html><head><style>div{font-size=1.4rem; line-height: 1.4rem;}</style></head><body>' + str(
+		m) + '</body></html>'
+	return template
+
+
+def send_application_mail(application):
+	# try:
+	subject = 'Leave Application'
+	message = get_message(application)
+	from_email = 'Team LNMIIT Leave Management System'
+	recipient_list = ['19uec117@lnmiit.ac.in', str(application.up_next.email)]
+	html_message = message
+	send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list, html_message=html_message)
+	# except Exception as e:
+		# publish_on_telegram_channel(chat_id=int(os.getenv('TelegramChannel')), message=str(e))

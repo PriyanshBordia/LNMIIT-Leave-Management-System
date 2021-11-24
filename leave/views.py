@@ -57,8 +57,7 @@ def newApplication(request):
 				application.person = person
 				application.up_next = up_next
 				application.save()
-				recipient_list = ['19uec117@lnmiit.ac.in', str(up_next.email)]
-				send_application_mail(person, recipient_list, application)
+				send_application_mail(application)
 				return HttpResponseRedirect(reverse('person', args=()))
 			except Person.DoesNotExist:
 				return render(request, 'leave/error.html', context={})
