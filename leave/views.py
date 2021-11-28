@@ -54,6 +54,7 @@ def newApplication(request):
 				if Application.objects.filter(person=person).exists():
 					application = Application.objects.filter(person=person)[0]
 				up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_DEPARTMENT)[0]
+				print(up_next)
 				application.person = person
 				application.up_next = up_next
 				application.save()
@@ -107,8 +108,7 @@ def approve(request, application_id):
 					up_next = request.user.person
 			application.up_next = up_next
 			application.save()
-			recipient_list = ['19uec117@lnmiit.ac.in', str(up_next.email)]
-			send_application_mail(request.user.person, recipient_list, application)
+			send_application_mail(application)
 			return HttpResponseRedirect(reverse('status', args=()))
 		except Person.DoesNotExist:
 			return render(request, 'leave/error.html', context={})
@@ -122,6 +122,7 @@ def reject(request, application_id):
 		application = Application.objects.get(pk=application_id)
 		application.status = Application.REJECTED
 		application.save()
+		send_application_mail(application)
 		return HttpResponseRedirect(reverse('status', args=()))
 	except Application.DoesNotExist:
 		return render(request, 'leave/error.html', context={})

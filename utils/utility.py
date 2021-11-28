@@ -1,4 +1,5 @@
 import os
+import humanize
 from django.core.mail import send_mail
 
 from .alerts import publish_on_telegram_channel
@@ -12,13 +13,15 @@ def get_message(a):
 		m += '<h3>Dear Professor,</h3>'
 
 		message['P'] = f'<div>{a.person.first_name} {a.person.last_name} wants to take a leave.</div>'
-		message['A'] = f'<div>You application dated <b>{a.created_at}</b> has been approved.</div>'
-		message['R'] = f'<div>You application dated <b>{a.created_at}</b> has been rejected by {a.up_next.get_role_display}.</div>'
+		message['A'] = f'<div>You application dated <b>{humanize.naturaltime(a.created_at)}</b> has been approved.</div>'
+		message['R'] = f'<div>You application dated <b>{humanize.naturaltime(a.created_at)}</b> has been rejected by {a.up_next.get_role_display()}.</div>'
 
 		m += str(message[a.status])
 		m += '<h2>Application Details</h2>'
 		m += '<div>• From ' + str(a.start_date) + ' to ' + str(a.end_date) + '<br>'
-		m += '• Reason: ' + a.comments + '</div>'
+		m += '• Reason: ' + a.comments + '<br>'
+		m += '• Created at: ' + a.created_at + '<br>'
+		m += '• Updated at: ' + a.updated_at + '</div>'
 		m += '<br><br><footer>--<br>Regards<br>' + 'Team LMS</footer>'
 		m += '</div>'
 
