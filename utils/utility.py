@@ -19,10 +19,10 @@ def get_message(a):
 		m += '<h2>Application Details</h2>'
 		m += '<div>• From ' + str(a.start_date) + ' to ' + str(a.end_date) + '<br>'
 		m += '• Reason: ' + a.comments + '</div>'
-		m += '<footer>--<br>Regards<br>' + 'Team LMS</footer>'
+		m += '<br><br><footer>--<br>Regards<br>' + 'Team LMS</footer>'
 		m += '</div>'
 
-		template = '""<html><head><style>div{font-size=1.4rem; line-height: 1.4rem;}</style></head><body>' + str(m) + '</body></html>""'
+		template = '<html><head><style>div{font-size=1.4rem; line-height: 1.4rem;}</style></head><body>' + str(m) + '</body></html>'
 		return template
 	except Exception as e:
 		publish_on_telegram_channel(chat_id=int(os.getenv('TelegramChannel')), message=str(e))

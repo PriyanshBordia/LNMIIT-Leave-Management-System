@@ -62,6 +62,11 @@ class Person(models.Model):
 
 	# slug = models.SlugField(unique=True)
 
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Person'
+		verbose_name_plural = 'Persons'
+
 	def is_director(self):
 		return self.role == 'DR'
 
@@ -116,6 +121,6 @@ class Application(models.Model):
 		return self.person.is_valid() and self.start_date < self.end_date
 		
 	def __str__(self):
-		return f'{self.id}. {self.person.first_name} {self.person.last_name} - {self.get_status_display}'
+		return f'{self.id}. {self.person.first_name} {self.person.last_name} - {self.get_status_display()}'
 
 
