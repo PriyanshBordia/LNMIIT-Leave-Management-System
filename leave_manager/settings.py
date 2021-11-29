@@ -92,23 +92,23 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     },
 
-   	# 'development': {
-    #     'ENGINE': os.getenv('DEV_ENGINE'),
-    #     'NAME': os.getenv('DEV_DB_NAME'),
-    #     'USER': os.getenv('DEV_DB_USER'),
-    #     'PASSWORD': os.getenv('DEV_DB_PASSWORD'),
-    #     'HOST': os.getenv('DEV_DB_HOST'),
-    #     'PORT': os.getenv('DEV_DB_PORT'),
-    # },
+   	'development': {
+        'ENGINE': os.getenv('DEV_ENGINE'),
+        'NAME': os.getenv('DEV_DB_NAME'),
+        'USER': os.getenv('DEV_DB_USER'),
+        'PASSWORD': os.getenv('DEV_DB_PASSWORD'),
+        'HOST': os.getenv('DEV_DB_HOST'),
+        'PORT': os.getenv('DEV_DB_PORT'),
+    },
 
-   	# 'production': {
-    #     'ENGINE': os.getenv('ENGINE'),
-    #     'NAME': os.getenv('DB_NAME'),
-    #     'USER': os.getenv('DB_USER'),
-    #     'PASSWORD': os.getenv('DB_PASSWORD'),
-    #     'HOST': os.getenv('DB_HOST'),
-    #     'PORT': os.getenv('DB_PORT'),
-    # },
+   	'production': {
+        'ENGINE': os.getenv('ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+    },
 }
 
 

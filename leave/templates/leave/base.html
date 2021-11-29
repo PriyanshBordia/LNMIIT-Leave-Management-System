@@ -45,7 +45,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent" style="font-size: 1.1rem;">
             <ul class="navbar-nav mr-3 ml-auto">
-				{% if request.user.is_superuser %}
+				{% if request.user.id == 1 %}
 					<li class="nav-item dropdown">
 						<div class="nav-link dropdown-toggle" style="color: #c2dde6;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Super">
 							Admin
