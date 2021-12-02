@@ -152,12 +152,12 @@ STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 # STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, '/static'),
-#     os.path.join(BASE_DIR, 'circle/static'),
+#     os.path.join(BASE_DIR, '/static/'),
+#     os.path.join(BASE_DIR, 'leave/static'),
 # )
 
 # Media Files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'circle/static/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'leave/static/media')
 MEDIA_URL =  '/media/'
 
 #login redirection to homepage
