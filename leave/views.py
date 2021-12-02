@@ -54,7 +54,6 @@ def newApplication(request):
 				if Application.objects.filter(person=person).exists():
 					application = Application.objects.filter(person=person)[0]
 				up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_DEPARTMENT)[0]
-				print(up_next)
 				application.person = person
 				application.up_next = up_next
 				application.save()
