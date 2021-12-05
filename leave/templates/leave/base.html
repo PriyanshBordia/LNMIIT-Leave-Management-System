@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
 	<!-- Font Icons -->
 	<script src="https://kit.fontawesome.com/3288abfe00.js" crossorigin="anonymous"></script>
@@ -25,15 +25,13 @@
 
 	{% load static %}
 
+	<link href="{% static 'leave/css/style.css' %}" rel="stylesheet">
+
 	<script rel="javascript" href="{% static 'leave/js/script.js' %}"></script>
-
-	<link rel="stylesheet" href="{% static 'leave/css/style.css' %}" />
-
 
 	{% block head %}{% endblock %}
 	
 	<!-- Icon -->
-	<!-- <link rel="icon" href="" /> -->
 	<title> {% block title %}{% endblock %} | LNMIIT LMS</title>
 </head>
 <body>
