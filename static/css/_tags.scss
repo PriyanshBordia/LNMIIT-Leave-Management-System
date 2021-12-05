@@ -1,0 +1,12 @@
+.tags {
+
+	&__container {
+		
+		margin: 1rem auto 1rem auto;
+
+		&__grid {
+			margin: 2rem auto 2rem auto;
+			border: .125rem solid $LightestNavy;
+		}
+	}
+}
