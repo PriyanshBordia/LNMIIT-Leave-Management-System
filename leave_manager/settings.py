@@ -62,6 +62,8 @@ MIDDLEWARE = [
    	# 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+WHITENOISE_AUTOREFRESH = True
+
 ROOT_URLCONF = 'leave_manager.urls'
 
 TEMPLATES = [
