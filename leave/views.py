@@ -52,7 +52,7 @@ def newApplication(request):
 				application.save()
 				person = Person.objects.get(pk=request.user.person.id)
 				if Application.objects.filter(person=person).exists():
-					application = Application.objects.filter(person=person)[0]
+					application = Application.objects.filter(person=person).order_by('-created_at')[0]
 				up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_DEPARTMENT)[0]
 				application.person = person
 				application.up_next = up_next
