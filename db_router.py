@@ -20,8 +20,8 @@ class Router:
 		else:
 			return 'default'
 
-	def allow_relation(self, obj1, obj2, **hints):
-		pass
+	# def allow_relation(self, obj1, obj2, **hints):
+		# pass
 
-	def allow_migrate(self, db, app_label, **hints):
-		pass
+	# def allow_migrate(self, db, app_label, **hints):
+		
