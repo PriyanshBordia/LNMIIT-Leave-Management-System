@@ -15,6 +15,9 @@ class Person(models.Model):
 	HEAD_OF_DEPARTMENT = 'HOD'
 	FACULTY = 'F'
 	VISITING_FACULTY = 'VF'
+	Registrar = 'RG'
+	HEAD_OF_STAFF = 'HOS'
+	STAFF = 'S'
 
 	COMPUTER_SCIENCE_AND_ENGINEERING = 'CSE' 
 	ELECTRONICS_AND_COMMUNICATION_ENGINEERING = 'ECE'
@@ -22,6 +25,7 @@ class Person(models.Model):
 	HUMANITIES_AND_SOCIAL_SCIENCES = 'HSS' 
 	MATHEMATICS = 'MH'
 	PHYSICS = 'PH'
+	NON_TEACHING_STAFF = 'NTS'
 
 	PERSON_ROLES = (
 		('DR', 'Director'),
@@ -31,7 +35,9 @@ class Person(models.Model):
 		('HOD', 'Head of Department'),
 		('F', 'Faculty'),
 		('VF', 'Visiting Faculty'),
-		# ('S', 'Staff'),
+		('RG', 'Registrar'),
+		('HOS', 'Head of Staff'),
+		('S', 'Staff'),
 	)
 
 	DEPARTMENT = (
@@ -41,6 +47,7 @@ class Person(models.Model):
 		('HSS', 'Humanities and Social Sciences'),
 		('MH', 'Mathematics'),
 		('PH', 'Physics'),
+		('NTS', 'Non Teaching Staff'),
 	)
 
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='person')

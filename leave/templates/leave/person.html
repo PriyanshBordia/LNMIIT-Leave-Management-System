@@ -56,7 +56,16 @@
 						</table>
 					</div>
 				{% else %}
-					<div class="alert alert-info" role="alert">No Application.</div>
+					<div class="row">
+						<div class="alert alert-info" role="alert">No Application.</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2"></div>
+						<div class="col-md-8">
+							<a class="form-control form-control-lg btn btn-outline-success btn-lg " href="{% url 'newApplication' %}" role="button">Apply</a>
+						</div>
+						<div class="col-md-2"></div>
+					</div>
 				{% endif %}
 			</div>
 		</div>

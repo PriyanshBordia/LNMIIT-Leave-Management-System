@@ -89,18 +89,23 @@
 						</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" style="color: #c2dde6;" href="{% url 'signup' %}">
+							Register
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" style="color: #c2dde6;" href="{% url 'password_reset' %}" title="Reset password">
 							Reset Password
 						</a>
 					</li>
 				{% endif %}
-				{% if user.is_superuser %}
+				<!-- {% if user.is_superuser %}
 					<li class="nav-item">
 						<a class="nav-link" style="color: #c2dde6;" href="{% url 'signup' %}">
 							Register
 						</a>
 					</li>
-				{% endif %}
+				{% endif %} -->
             </ul>
         </div>
     </nav>
