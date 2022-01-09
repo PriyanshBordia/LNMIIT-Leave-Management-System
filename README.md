@@ -2,3 +2,4 @@
 LNMIIT-Leave-Management
 - Staff
 - Fill Details
+- Admin
