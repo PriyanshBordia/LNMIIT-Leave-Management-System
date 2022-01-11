@@ -1,5 +1,6 @@
 # LNMIIT-Leave-Management
 LNMIIT-Leave-Management
-- Staff
+- For Staff
 - Fill Details
 - Admin
+- Policy
