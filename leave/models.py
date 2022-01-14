@@ -52,8 +52,8 @@ class Person(models.Model):
 
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='person')
 
-	faculty_id = models.CharField(max_length=10, unique=True)
-	leave_count = models.IntegerField(validators=[MinValueValidator(0)], default=22, blank=False, null=False)
+	faculty_id = models.CharField(max_length=10, blank=False, null=False, unique=True, default='0')
+	leave_count = models.IntegerField(validators=[MinValueValidator(0)], blank=False, null=False, default=22)
 	department = models.CharField(max_length=3, choices=DEPARTMENT, blank=False, null=False, default='CSE')
 
 	first_name = models.CharField(max_length=50, validators=[MinLengthValidator(1)], blank=False, null=False)

@@ -65,9 +65,11 @@ class UrlsTestCase(TestCase):
 class ViewsTestCase(TestCase):
 
 	def setUp(self):
+		h_u = User.objects.create_user(username='test_h', password='test_h')
 		u = User.objects.create_user(username='test', password='test')
-		p = Person.objects.create(user=u, faculty_id='1', department=Person.COMPUTER_SCIENCE_AND_ENGINEERING, first_name='test', last_name='test', email='test@lnmiit.ac.in', role=Person.FACULTY)
-		Application.objects.create(person=p, status=Application.PENDING, start_date='2021-11-15', end_date='2021-11-21', hasClasses=True, rescheduled_date='2021-11-21', up_next=p)
+		hod = Person.objects.create(user=h_u, faculty_id='0', department=Person.COMPUTER_SCIENCE_AND_ENGINEERING, first_name='test', email='test_h@lnmiit.ac.in', role=Person.DEAN_OF_FACULTY_AFFAIRS)
+		p = Person.objects.create(user=u, faculty_id='1', department=Person.COMPUTER_SCIENCE_AND_ENGINEERING, first_name='test', email='test@lnmiit.ac.in', role=Person.FACULTY)
+		Application.objects.create(person=p, status=Application.PENDING, start_date='2021-11-15', end_date='2021-11-21', hasClasses=True, rescheduled_date='2021-11-21', up_next=hod)
 		self.client.post('/account/login/', {'username': 'test', 'password': 'test'})
 
 	def test_view_status_code_home(self):

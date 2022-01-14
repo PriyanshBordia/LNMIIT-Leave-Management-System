@@ -126,10 +126,7 @@ def approve(request, application_id):
 				else:
 					return render(request, 'leave/error.html', context={'message': 'You have no leaves left.'})
 			else:
-				if Person.objects.filter(role=Person.DEAN_OF_FACULTY_AFFAIRS).exists():
-					up_next = Person.objects.filter(role=Person.DEAN_OF_FACULTY_AFFAIRS).first()
-				else:
-					up_next = request.user.person
+				return render(request, 'leave/error.html', context={})
 			application.up_next = up_next
 			application.save()
 			send_application_mail(application)
