@@ -15,7 +15,7 @@ class Person(models.Model):
 	HEAD_OF_DEPARTMENT = 'HOD'
 	FACULTY = 'F'
 	VISITING_FACULTY = 'VF'
-	Registrar = 'RG'
+	REGISTRAR = 'RG'
 	HEAD_OF_STAFF = 'HOS'
 	STAFF = 'S'
 

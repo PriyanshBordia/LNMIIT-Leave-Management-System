@@ -83,7 +83,7 @@ def application(request, application_id):
 @require_http_methods(["GET", "POST"])
 def status(request):
 	try:
-		applications = Application.objects.filter(up_next_id=request.user.person.id, status='P').order_by('-created_at')
+		applications = Application.objects.filter(up_next_id=request.user.person.id, status=Application.PENDING).order_by('-created_at')
 		return render(request, 'leave/status.html', context={'applications': applications})
 	except Application.DoesNotExist:
 		return render(request, 'leave/error.html', context={})
@@ -96,11 +96,25 @@ def approve(request, application_id):
 		application = Application.objects.get(pk=application_id)
 		try:
 			if application.up_next.role == Person.HEAD_OF_STAFF:
-				pass
+				if Person.objects.filter(role=Person.REGISTRAR).exists():
+					up_next = Person.objects.filter(role=Person.REGISTRAR).first()
+				else:
+					application.status = Application.REJECTED
+					up_next = request.user.person
+			elif application.up_next.role == Person.REGISTRAR:
+				application.status = Application.APPROVED
+				person = Person.objects.get(pk=application.person.id)
+				up_next = person
+				if person.leave_count > 0:
+					person.leave_count -= 1
+					person.save()
+				else:
+					return render(request, 'leave/error.html', context={'message': 'You have no leaves left.'})
 			elif application.up_next.role == Person.DEAN_OF_FACULTY_AFFAIRS:
 				if Person.objects.filter(role=Person.DIRECTOR).exists():
 					up_next = Person.objects.filter(role=Person.DIRECTOR).first()
 				else:
+					application.status = Application.REJECTED
 					up_next = request.user.person
 			elif application.up_next.role == Person.DIRECTOR:
 				application.status = Application.APPROVED
