@@ -69,7 +69,7 @@
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{% url 'newApplication' %}">New Application</a>
 							<div class="dropdown-divider"></div>
-							{% if request.user.person.role != 'F' and request.user.person.role != 'VF' %}
+							{% if request.user.person.role != 'S' and request.user.person.role != 'F' and request.user.person.role != 'VF' %}
 								<a class="dropdown-item" href="{% url 'status' %}">Status</a>
 								<a class="dropdown-item" href="{% url 'status' %}">Up-coming</a>
 								<div class="dropdown-divider"></div>
@@ -77,6 +77,8 @@
 								<a class="dropdown-item" href="{% url 'status' %}">Rejected</a>
 								<div class="dropdown-divider"></div>
 							{% endif %}
+							<a class="dropdown-item" href="https://www.lnmiit.ac.in/uploaded_files/2%20-%20HR%20Manual.pdf">HR - Manual</a>
+							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{% url 'password_reset' %}">Reset password</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>

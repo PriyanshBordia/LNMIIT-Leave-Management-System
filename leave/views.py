@@ -52,8 +52,11 @@ def newApplication(request):
 				application.save()
 				person = Person.objects.get(pk=request.user.person.id)
 				if Application.objects.filter(person=person).exists():
-					application = Application.objects.filter(person=person).order_by('-created_at')[0]
-				up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_DEPARTMENT)[0]
+					application = Application.objects.filter(person=person).order_by('-created_at').first()
+				if person.role == Person.STAFF:
+					up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_DEPARTMENT).first()
+				else:
+					up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_STAFF).first()
 				application.person = person
 				application.up_next = up_next
 				application.save()
@@ -92,17 +95,25 @@ def approve(request, application_id):
 	try:
 		application = Application.objects.get(pk=application_id)
 		try:
-			if application.up_next.role == Person.DEAN_OF_FACULTY_AFFAIRS:
+			if application.up_next.role == Person.HEAD_OF_STAFF:
+				pass
+			elif application.up_next.role == Person.DEAN_OF_FACULTY_AFFAIRS:
 				if Person.objects.filter(role=Person.DIRECTOR).exists():
-					up_next = Person.objects.filter(role=Person.DIRECTOR)[0]
+					up_next = Person.objects.filter(role=Person.DIRECTOR).first()
 				else:
 					up_next = request.user.person
 			elif application.up_next.role == Person.DIRECTOR:
 				application.status = Application.APPROVED
-				up_next = Person.objects.get(pk=application.person.id)
+				person = Person.objects.get(pk=application.person.id)
+				up_next = person
+				if person.leave_count > 0:
+					person.leave_count -= 1
+					person.save()
+				else:
+					return render(request, 'leave/error.html', context={'message': 'You have no leaves left.'})
 			else:
 				if Person.objects.filter(role=Person.DEAN_OF_FACULTY_AFFAIRS).exists():
-					up_next = Person.objects.filter(role=Person.DEAN_OF_FACULTY_AFFAIRS)[0]
+					up_next = Person.objects.filter(role=Person.DEAN_OF_FACULTY_AFFAIRS).first()
 				else:
 					up_next = request.user.person
 			application.up_next = up_next
