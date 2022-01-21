@@ -37,4 +37,21 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		var today = new Date().toISOString().split('T')[0];
+		console.log(today);
+		document.getElementById("id_start_date").setAttribute('min', today);
+		document.getElementById("id_rescheduled_date").setAttribute('min', today);
+		document.getElementById("id_end_date").setAttribute('min', today);
+
+		document.querySelector('#id_start_date').onchange = () => {
+			var start_date = document.getElementById("id_start_date").value;
+			document.getElementById("id_end_date").setAttribute('min', start_date);
+		};
+
+		document.querySelector('#id_end_date').onchange = () => {
+			var end_date = document.getElementById("id_end_date").value;
+			document.getElementById("id_start_date").setAttribute('max', end_date);
+		};
+	</script>
 {% endblock %}
