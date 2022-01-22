@@ -20,7 +20,7 @@ cwcwidth==0.1.5
 debugpy==1.5.1
 decorator==5.1.0
 defusedxml==0.7.1
-Django==3.2.9
+Django==3.2.11
 django-autoslug-field==0.2.3
 django-bootstrap-datepicker-plus==3.0.5
 django-bootstrap4==3.0.1
