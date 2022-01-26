@@ -14,9 +14,9 @@ class ApplicationAdmin(admin.ModelAdmin):
 	list_per_page = 10
 
 
-admin.site.site_header = 'Admin LMS - The LNMIIT '
+admin.site.site_header = 'Admin LMS - The LNMIIT'
 admin.site.site_title = "LMS - The LNMIIT"
-admin.site.index_title = "Administration"
+admin.site.index_title = "Admin"
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Application, ApplicationAdmin)
