@@ -159,7 +159,7 @@ termcolor2==0.0.3
 toml==0.10.2
 tornado==6.2
 traitlets==4.3.3
-Twisted==19.2.0
+Twisted==22.4.0
 txaio==18.8.1
 typing-extensions==3.10.0.2
 tzlocal==1.5.1
