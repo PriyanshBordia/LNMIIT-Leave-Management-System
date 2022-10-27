@@ -97,7 +97,7 @@ multidict==6.0.2
 mysql==0.0.3
 mysqlclient==2.1.0
 numpy==1.22.4
-oauthlib==3.1.1
+oauthlib==3.2.1
 parso==0.5.1
 pendulum==2.1.2
 pexpect==4.7.0
