@@ -44,7 +44,7 @@ dateparser==0.7.1
 decorator==4.4.0
 delta-rest-client==1.0.8
 deribit-api==1.1.1
-Django==2.2.4
+Django==2.2.28
 django-admin-rangefilter==0.5.0
 django-autocomplete-light==3.9.4
 django-bootstrap-datepicker-plus==3.0.5
