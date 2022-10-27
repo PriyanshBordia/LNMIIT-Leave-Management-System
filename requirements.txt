@@ -10,6 +10,7 @@ django-humanize==0.1.2
 gunicorn==20.1.0
 humanize==4.4.0
 idna==3.4
+psycopg2-binary==2.9.5
 requests==2.28.1
 soupsieve==2.3.2.post1
 sqlparse==0.4.3
