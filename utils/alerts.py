@@ -1,9 +1,11 @@
-import os
 import json
+import os
+
 import requests
 import telegram
 
-def custom_alert_slack(message):
+
+def slack_alert(message):
 	text = ""
 	text = "%s" % message
 	requests.post(os.getenv('SLACK_WEBHOOK'), data=json.dumps({"text": text}), headers={'Content-type': 'application/json'})

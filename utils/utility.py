@@ -1,8 +1,9 @@
 import os
+
 import humanize
 from django.core.mail import send_mail
 
-from .alerts import publish_on_telegram_channel
+from utils.alerts import publish_on_telegram_channel
 
 
 def get_message(a):

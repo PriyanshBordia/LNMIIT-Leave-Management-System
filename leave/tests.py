@@ -1,13 +1,11 @@
-from django.test import TestCase
-from django.urls import reverse, resolve
+from django.contrib.auth.models import User
 from django.core.management import call_command
-
+from django.test import TestCase
+from django.urls import resolve, reverse
 from termcolor import cprint
 
-from django.contrib.auth.models import User
-
-from .models import Person, Application
 from . import views
+from .models import Application, Person
 
 # Create your tests here.
 

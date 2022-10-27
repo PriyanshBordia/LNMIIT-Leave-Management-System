@@ -1,14 +1,14 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls.base import reverse
-
-from utils.utility import send_application_mail
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.views.decorators.http import require_http_methods
 
+from utils.utility import send_application_mail
+
+from .forms import ApplicationForm, PersonForm, UserForm
 from .models import Application, Person
-from .forms import UserForm, ApplicationForm, PersonForm 
 
 # Create your views here.
 

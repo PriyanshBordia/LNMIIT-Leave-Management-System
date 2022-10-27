@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Person, Application
+from .models import Application, Person
 
 # Register your models here.
 

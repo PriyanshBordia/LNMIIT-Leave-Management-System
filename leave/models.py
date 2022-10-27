@@ -1,9 +1,7 @@
-from django.db import models
-from django.utils.text import slugify
-from django.core.validators import MinValueValidator, MinLengthValidator
-from django.db.models.fields import SlugField
-
 from django.contrib.auth.models import User
+from django.core.validators import MinLengthValidator, MinValueValidator
+from django.db import models
+from django.db.models.fields import SlugField
 
 # Create your models here.
 
