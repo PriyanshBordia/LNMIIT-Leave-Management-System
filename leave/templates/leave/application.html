@@ -26,8 +26,8 @@
 						<div class="col-md-6">To: {{ application.end_date|date }}</div>
 					</div>
 					<div class="row application__grid__desc">
-						<div class="col-md-3">Status: {{ application.get_status_display }}</div>
-						<div class="col-md-4">Has Classes: {{ application.hasClasses }}</div>
+						<div class="col-md-4">Status: <span class="alert-{% if application.status == 'A' %}success{% elif application.status == 'P' %}warning{% else %}danger{% endif %}">{{ application.get_status_display }}</span></div>
+						<div class="col-md-3">Has Classes: {{ application.hasClasses }}</div>
 						<div class="col-md-5">Rescheduled Class: {{ application.rescheduled_date }}</div>
 					</div>
 					<div style="float:left; margin:2rem;">Comments:</div>

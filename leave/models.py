@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.core.validators import MinLengthValidator, MinValueValidator
+from django.core.validators import MinLengthValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models.fields import SlugField
 
@@ -51,8 +51,8 @@ class Person(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='person')
 
 	faculty_id = models.CharField(max_length=10, blank=False, null=False, unique=True, default='0')
-	leave_count = models.IntegerField(validators=[MinValueValidator(0)], blank=False, null=False, default=22)
-	department = models.CharField(max_length=3, choices=DEPARTMENT, blank=False, null=False, default='CSE')
+	leave_count = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(22)], blank=False, null=False, default=22)
+	department = models.CharField(max_length=3, choices=DEPARTMENT, blank=False, null=False, default=COMPUTER_SCIENCE_AND_ENGINEERING)
 
 	first_name = models.CharField(max_length=50, validators=[MinLengthValidator(1)], blank=False, null=False)
 	last_name = models.CharField(max_length=50, blank=True, null=False)
@@ -123,7 +123,7 @@ class Application(models.Model):
 		ordering = ['start_date', 'end_date']
 
 	def is_valid(self):
-		return self.person.is_valid() and self.start_date < self.end_date
+		return (self.end_date - self.start_date) <= self.person.leave_count
 		
 	def __str__(self):
 		return f'{self.id}. {self.person.first_name} {self.person.last_name} - {self.get_status_display()}'

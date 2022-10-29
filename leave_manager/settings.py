@@ -159,7 +159,7 @@ STATIC_URL = '/static/'
 # )
 
 # Media Files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'leave/static/leave/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'leave/static/media')
 MEDIA_URL =  '/media/'
 
 #login redirection to homepage

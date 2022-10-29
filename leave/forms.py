@@ -35,8 +35,17 @@ class ApplicationForm(forms.ModelForm):
 		end_date = self.cleaned_data.get('end_date')
 		rescheduled_date = self.cleaned_data.get('rescheduled_date')
 
-		# if start_date < datetime.date or end_date < datetime.date or rescheduled_date < datetime.date.now() or start_date > end_date or rescheduled_date >= start_date or rescheduled_date <= end_date:
-			# raise forms.ValidationError('Invalid Date')
+		if start_date < datetime.date.now():
+			raise forms.ValidationError('Invalid Input: Start Date must be > current date.')
+		if end_date < datetime.date.now():
+			raise forms.ValidationError('Invalid Input: End Date must be > current date.')
+		if rescheduled_date < datetime.date.now():
+			raise forms.ValidationError('Invalid Input: Rescheduled Date must be > current date.')
+		if start_date > end_date:
+			raise forms.ValidationError('Invalid Input: start date > end date')
+		if (rescheduled_date >= start_date and rescheduled_date <= end_date):
+			raise forms.ValidationError('Invalid Input: Rescheduled Date must not lie withing the leave dates.')
+		
 		return self.cleaned_data
 	
 	def save(self, commit=True):
