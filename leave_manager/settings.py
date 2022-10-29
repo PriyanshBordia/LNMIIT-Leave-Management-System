@@ -45,7 +45,6 @@ INSTALLED_APPS = [
 	'humanize',
 	'bootstrap4',
 	'fontawesome_5',
-	# 'bootstrap_datepicker_plus',
 	# 'django_autoslug',
 	'accounts',
 ]
@@ -58,7 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-   	# 'whitenoise.middleware.WhiteNoiseMiddleware',
+   	'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 WHITENOISE_AUTOREFRESH = True
