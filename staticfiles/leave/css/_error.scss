@@ -1,0 +1,38 @@
+/* Error Message */
+.error {
+	
+	margin: 2rem auto 1.5rem auto;
+	text-align: center;
+	align-items: center;
+
+	&__grid {
+
+		&__img {
+
+			align-items: center;
+		}
+
+		&__type, .success-message-type {
+			max-width: 700px;
+			margin: auto;
+			font-size: 2rem;
+		}
+
+		&__message, .success-message {
+			max-width: 700px;
+			margin: auto;
+			text-align: center;
+			padding: 30px;
+			font-size: 1.4rem;
+
+		}
+		
+		&__a, .success-message-a {
+
+			margin: 2rem auto 1rem auto;
+			color: white;
+			
+			text-decoration: none !important;
+		}
+	} 
+}
