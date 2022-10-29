@@ -37,7 +37,7 @@ def send_application_mail(application):
 		subject = 'Leave Application'
 		message = get_message(application)
 		from_email = 'Team LNMIIT Leave Management System'
-		recipient_list = ['19uec117@lnmiit.ac.in', str(application.up_next.email)]
+		recipient_list = [str(application.up_next.email)]
 		html_message = message
 		send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list, html_message=html_message)
 	except Exception as e:
