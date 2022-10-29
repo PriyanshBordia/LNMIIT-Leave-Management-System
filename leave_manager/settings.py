@@ -24,11 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #os.getenv('DEBUG', False)
+DEBUG = os.getenv('DEBUG', False)
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS'), 'testserver', '127.0.0.1']
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS'), 'testserver']
 
-ADMINS = [('Priyansh Bordia', 'priyanshbordia2@gmail.com')]
+ADMINS = [os.getenv('ADMINS')]
 
 # Application definition
 
@@ -159,7 +159,7 @@ STATIC_URL = '/static/'
 # )
 
 # Media Files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'leave/static/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'leave/static/leave/media')
 MEDIA_URL =  '/media/'
 
 #login redirection to homepage
