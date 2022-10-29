@@ -71,7 +71,8 @@ def newApplication(request):
 				send_application_mail(application)
 				return HttpResponseRedirect(reverse('person', args=()))
 			except Person.DoesNotExist:
-				return render(request, 'leave/error.html', context={'message': 'Person does not exist.'})
+				messages.error(request, f'Person does not exist.')
+				return HttpResponseRedirect("../person")
 		else:
 			return render(request, 'leave/newApplication.html', context={'form': application})
 	return render(request, 'leave/newApplication.html', context={'form': application})
@@ -84,7 +85,9 @@ def application(request, application_id: int):
 		application = Application.objects.get(pk=application_id)
 		return render(request, 'leave/application.html', context={'application': application})
 	except Application.DoesNotExist:
-		return render(request, 'leave/error.html', context={'message': f'Application with id: {application_id} does not exist.'})
+		messages.error(request, f'Application with id: {application_id} does not exist.')
+		return HttpResponseRedirect("../status")
+
 
 @login_required
 @require_http_methods(["GET", "POST"])
@@ -93,7 +96,8 @@ def status(request):
 		applications = Application.objects.filter(up_next_id=request.user.person.id, status=Application.PENDING).order_by('-created_at')
 		return render(request, 'leave/status.html', context={'applications': applications})
 	except Application.DoesNotExist:
-		return render(request, 'leave/error.html', context={'message': 'Application does not exist.'})
+		messages.error(request, f'Application does not exist.')
+		return HttpResponseRedirect("../person")
 
 
 @login_required
@@ -112,11 +116,12 @@ def approve(request, application_id: int):
 				application.status = Application.APPROVED
 				person = Person.objects.get(pk=application.person.id)
 				up_next = person
-				if person.leave_count > 0:
-					person.leave_count -= 1
-					person.save()
+			elif application.up_next.role == Person.HEAD_OF_DEPARTMENT:
+				if Person.objects.filter(role=Person.DEAN_OF_FACULTY_AFFAIRS).exists():
+					up_next = Person.objects.filter(role=Person.DEAN_OF_FACULTY_AFFAIRS).first()
 				else:
-					return render(request, 'leave/error.html', context={'message': 'You have no leaves left.'})
+					application.status = Application.REJECTED
+					up_next = request.user.person
 			elif application.up_next.role == Person.DEAN_OF_FACULTY_AFFAIRS:
 				if Person.objects.filter(role=Person.DIRECTOR).exists():
 					up_next = Person.objects.filter(role=Person.DIRECTOR).first()
@@ -127,22 +132,19 @@ def approve(request, application_id: int):
 				application.status = Application.APPROVED
 				person = Person.objects.get(pk=application.person.id)
 				up_next = person
-				if person.leave_count > 0:
-					person.leave_count -= 1
-					person.save()
-				else:
-					return render(request, 'leave/error.html', context={'message': 'You have no leaves left.'})
 			else:
-				return render(request, 'leave/error.html', context={'message': 'Error in approving application.'})
+				messages.error(request, 'Error in approving application.')
+				return HttpResponseRedirect("../status")
 			application.up_next = up_next
 			application.save()
 			send_application_mail(application)
 			return HttpResponseRedirect(reverse('status', args=()))
 		except Person.DoesNotExist:
-			return render(request, 'leave/error.html', context={'message': "Person does not exist"})
+			messages.error(request, "Person does not exist")
+			return HttpResponseRedirect("../status")
 	except Application.DoesNotExist:
-		return render(request, 'leave/error.html', context={'message': f'Application with id: {application_id} does not exist.'})
-
+		messages.error(request, f'Application with id: {application_id} does not exist.')
+		return HttpResponseRedirect("../status")
 
 @login_required
 def reject(request, application_id: int):
@@ -153,7 +155,8 @@ def reject(request, application_id: int):
 		send_application_mail(application)
 		return HttpResponseRedirect(reverse('status', args=()))
 	except Application.DoesNotExist:
-		return render(request, 'leave/error.html', context={'message': f'Application with id: {application_id} does not exist.'})
+		messages.error(request, f'Application with id: {application_id} does not exist.')
+		return HttpResponseRedirect("../status")
 
 
 @login_required
@@ -169,7 +172,7 @@ def update(request):
 		return HttpResponseRedirect(reverse('user', args=(request.user.id, )))
 	except Exception as e:
 		messages.error(request, str(e))
-		return HttpResponseRedirect("/home")
+		return HttpResponseRedirect("../home")
 
 
 @login_required
@@ -178,7 +181,8 @@ def user(request, user_id):
 		user = User.objects.get(pk=user_id)
 		return render(request, 'leave/user.html', context={"user": user})
 	except User.DoesNotExist:
-		return render(request, 'leave/error.html', context={"message": "User Doesn't Exist", "type": "Value DoesNotExist!!", "link": "users"})
+		messages.error(request, "User Doesn't Exist")
+		return HttpResponseRedirect("../home")
 
 
 @login_required
