@@ -182,7 +182,3 @@ DEFAULT_FROM_EMAIL = 'Team LNMIIT Leave Management System <no-reply@leave_manage
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-import mimetypes
-mimetypes.add_type("text/css", ".css", True)
