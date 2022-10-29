@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http.response import HttpResponseRedirect
@@ -38,7 +39,8 @@ def person(request):
 		applications = Application.objects.filter(person=person)
 		return render(request, 'leave/person.html', context={'person': person, 'applications': applications})
 	except Person.DoesNotExist:
-		return render(request, 'leave/error.html', context={})
+		messages.warning(request, 'Person does not exist.')
+		return HttpResponseRedirect("../person")
 
 
 @login_required
@@ -53,17 +55,23 @@ def newApplication(request):
 				person = Person.objects.get(pk=request.user.person.id)
 				if Application.objects.filter(person=person).exists():
 					application = Application.objects.filter(person=person).order_by('-created_at').first()
-				if person.role == Person.STAFF:
-					up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_DEPARTMENT).first()
+				if person.role in [Person.FACULTY, Person.VISITING_FACULTY]:
+					try:
+						up_next = Person.objects.get(department=person.department, role=Person.HEAD_OF_DEPARTMENT)
+					except Person.DoesNotExist:
+						up_next = person				
 				else:
-					up_next = Person.objects.filter(department=person.department, role=Person.HEAD_OF_STAFF).first()
+					try:
+						up_next = Person.objects.get(role=Person.HEAD_OF_STAFF)
+					except Person.DoesNotExist:
+						up_next = person	
 				application.person = person
 				application.up_next = up_next
 				application.save()
 				send_application_mail(application)
 				return HttpResponseRedirect(reverse('person', args=()))
 			except Person.DoesNotExist:
-				return render(request, 'leave/error.html', context={})
+				return render(request, 'leave/error.html', context={'message': 'Person does not exist.'})
 		else:
 			return render(request, 'leave/newApplication.html', context={'form': application})
 	return render(request, 'leave/newApplication.html', context={'form': application})
@@ -71,13 +79,12 @@ def newApplication(request):
 
 @login_required
 @require_http_methods(["GET"])
-def application(request, application_id):
+def application(request, application_id: int):
 	try:
 		application = Application.objects.get(pk=application_id)
 		return render(request, 'leave/application.html', context={'application': application})
 	except Application.DoesNotExist:
-		return render(request, 'leave/error.html', context={})
-
+		return render(request, 'leave/error.html', context={'message': f'Application with id: {application_id} does not exist.'})
 
 @login_required
 @require_http_methods(["GET", "POST"])
@@ -86,12 +93,12 @@ def status(request):
 		applications = Application.objects.filter(up_next_id=request.user.person.id, status=Application.PENDING).order_by('-created_at')
 		return render(request, 'leave/status.html', context={'applications': applications})
 	except Application.DoesNotExist:
-		return render(request, 'leave/error.html', context={})
+		return render(request, 'leave/error.html', context={'message': 'Application does not exist.'})
 
 
 @login_required
 @require_http_methods(["GET", "POST"])
-def approve(request, application_id):
+def approve(request, application_id: int):
 	try:
 		application = Application.objects.get(pk=application_id)
 		try:
@@ -126,19 +133,19 @@ def approve(request, application_id):
 				else:
 					return render(request, 'leave/error.html', context={'message': 'You have no leaves left.'})
 			else:
-				return render(request, 'leave/error.html', context={})
+				return render(request, 'leave/error.html', context={'message': 'Error in approving application.'})
 			application.up_next = up_next
 			application.save()
 			send_application_mail(application)
 			return HttpResponseRedirect(reverse('status', args=()))
 		except Person.DoesNotExist:
-			return render(request, 'leave/error.html', context={})
+			return render(request, 'leave/error.html', context={'message': "Person does not exist"})
 	except Application.DoesNotExist:
-		return render(request, 'leave/error.html', context={})
+		return render(request, 'leave/error.html', context={'message': f'Application with id: {application_id} does not exist.'})
 
 
 @login_required
-def reject(request, application_id):
+def reject(request, application_id: int):
 	try:
 		application = Application.objects.get(pk=application_id)
 		application.status = Application.REJECTED
@@ -146,19 +153,23 @@ def reject(request, application_id):
 		send_application_mail(application)
 		return HttpResponseRedirect(reverse('status', args=()))
 	except Application.DoesNotExist:
-		return render(request, 'leave/error.html', context={})
+		return render(request, 'leave/error.html', context={'message': f'Application with id: {application_id} does not exist.'})
 
 
 @login_required
 def update(request):
-	form = UserForm()
-	if request.POST:
-		if form.is_valid():
-			form.save()
-			return HttpResponseRedirect(reverse('user', args=(request.user.id, )))
-		else:
-			return render(request, 'leave/user.html', context={'form': form})
-	return HttpResponseRedirect(reverse('user', args=(request.user.id, )))
+	try:
+		form = UserForm()
+		if request.POST:
+			if form.is_valid():
+				form.save()
+				return HttpResponseRedirect(reverse('user', args=(request.user.id, )))
+			else:
+				return render(request, 'leave/user.html', context={'form': form})
+		return HttpResponseRedirect(reverse('user', args=(request.user.id, )))
+	except Exception as e:
+		messages.error(request, str(e))
+		return HttpResponseRedirect("/home")
 
 
 @login_required
@@ -167,7 +178,7 @@ def user(request, user_id):
 		user = User.objects.get(pk=user_id)
 		return render(request, 'leave/user.html', context={"user": user})
 	except User.DoesNotExist:
-		return render(request, 'leave/error.html', context={"message": "User Doesn't Exist!!", "type": "Value DoesNotExist!!", "link": "users"})
+		return render(request, 'leave/error.html', context={"message": "User Doesn't Exist", "type": "Value DoesNotExist!!", "link": "users"})
 
 
 @login_required
@@ -178,4 +189,4 @@ def users(request):
 
 @login_required
 def error(request):
-	return render(request, 'leave/error.html', context={"message": "Incompatible DataType.!!", "type": "Type Error", "link": "home"})
+	return render(request, 'leave/error.html', context={"message": "Error test.", "type": "Type Error", "link": "home"})

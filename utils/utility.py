@@ -21,8 +21,8 @@ def get_message(a):
 		m += '<h2>Application Details</h2>'
 		m += '<div>• From ' + str(a.start_date) + ' to ' + str(a.end_date) + '<br>'
 		m += '• Reason: ' + a.comments + '<br>'
-		m += '• Created at: ' + str(humanize.naturaltime(a.created_at)) + '<br>'
-		m += '• Updated at: ' + str(humanize.naturaltime(a.updated_at)) + '</div>'
+		m += '• Created at: ' + str(a.created_at) + '<br>'
+		m += '• Updated at: ' + str(a.updated_at) + '</div>'
 		m += '<br><br><footer>--<br>Regards<br>' + 'Team LMS</footer>'
 		m += '</div>'
 
