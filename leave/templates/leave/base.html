@@ -71,16 +71,16 @@
 							Profile
 						</div>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" role="menu">
-							<a class="dropdown-item" href="{% url 'person' %}">Profile</a>
+							<a class="dropdown-item" href="{% url 'person' %}">Details</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{% url 'newApplication' %}">New Application</a>
 							<div class="dropdown-divider"></div>
 							{% if request.user.person.role != 'S' and request.user.person.role != 'F' and request.user.person.role != 'VF' %}
-								<a class="dropdown-item" href="{% url 'status' %}">Status</a>
-								<a class="dropdown-item" href="{% url 'status' %}">Up-coming</a>
+								<a class="dropdown-item" href="{% url 'status' 'pending' %}">Pending</a>
+								<!-- <a class="dropdown-item" href="{% url 'status' 'up-coming' %}">Up-coming</a> -->
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="{% url 'status' %}">Approved</a>
-								<a class="dropdown-item" href="{% url 'status' %}">Rejected</a>
+								<a class="dropdown-item" href="{% url 'status' 'approved' %}">Approved</a>
+								<a class="dropdown-item" href="{% url 'status' 'rejected' %}">Rejected</a>
 								<div class="dropdown-divider"></div>
 							{% endif %}
 							<a class="dropdown-item" href="https://www.lnmiit.ac.in/uploaded_files/2%20-%20HR%20Manual.pdf" target="_blank">HR - Manual</a>

@@ -2,7 +2,7 @@
 {% extends 'leave/base.html' %}
 
 {% block title %}
-    Status {{ applications|length }}
+    Status - {{ type|capfirst }}
 {% endblock %}
 
 {% block head %}
@@ -17,7 +17,7 @@
 		{% if applications|length > 0 %}
 			<div class="row">
 				<div class="col-md-12">
-					<h2> Applications </h2>
+					<h2> {{ type|capfirst }} - Applications </h2>
 					<hr>
 					<table class="center">
 						<thead>
@@ -31,7 +31,6 @@
 								<th colspan="3">Actions</th>
 							<tr>
 						</thead>
-					
 						<tbody>
 							{% for application in applications %}
 								<tr>
@@ -42,8 +41,10 @@
 									<td>{{ application.rescheduled_date }}</td>
 									<td>{{ application.comments }}</td>
 									<td><a class="form-control form-control-lg btn btn-outline-warning btn-lg " href="{% url 'application' application.id %}" role="button">View</a></td>
-									<td><a class="form-control form-control-lg btn btn-outline-danger btn-lg " href="{% url 'reject' application.id %}" role="button">Reject</a></td>
-									<td><a class="form-control form-control-lg btn btn-outline-success btn-lg " href="{% url 'approve' application.id %}" role="button">Approve</a></td>
+									{% if type == "pending" %}
+										<td><a class="form-control form-control-lg btn btn-outline-danger btn-lg " href="{% url 'reject' application.id %}" role="button">Reject</a></td>
+										<td><a class="form-control form-control-lg btn btn-outline-success btn-lg " href="{% url 'approve' application.id %}" role="button">Approve</a></td>
+									{% endif %}
 								</tr>
 							{% endfor %}
 						</tbody>
@@ -54,7 +55,11 @@
 			<div class="row justify-content-center">
 				<div class="col-md-12">
 					<div class="alert alert-info" role="alert"> 
-						There are no pending applications to approve. 
+						{% if type == "pending" %}
+							There are no pending applications for review. 
+						{% else %}
+							All cleaned up.
+						{% endif %}
 					</div>
 				</div>
 			</div>

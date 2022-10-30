@@ -91,10 +91,15 @@ def application(request, application_id: int):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-def status(request):
+def status(request, type: str):
 	try:
-		applications = Application.objects.filter(up_next_id=request.user.person.id, status=Application.PENDING).order_by('-created_at')
-		return render(request, 'leave/status.html', context={'applications': applications})
+		if type == "pending":
+			applications = Application.objects.filter(up_next_id=request.user.person.id, status=Application.PENDING).order_by('-created_at')
+		elif type == "approved":
+			applications = Application.objects.filter(person__department=request.user.person.department, status=Application.APPROVED).order_by('-created_at')
+		elif type == "rejected":
+			applications = Application.objects.filter(person__department=request.user.person.department, status=Application.REJECTED).order_by('-created_at')
+		return render(request, 'leave/status.html', context={'applications': applications, 'type': type})
 	except Application.DoesNotExist:
 		messages.error(request, f'Application does not exist.')
 		return HttpResponseRedirect("../person")
