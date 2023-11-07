@@ -2,7 +2,7 @@ asgiref==3.5.2
 beautifulsoup4==4.11.1
 certifi==2023.7.22
 charset-normalizer==2.1.1
-Django==4.1.10
+Django==4.1.13
 django-bootstrap4==22.2
 django-extensions==3.2.1
 django-fontawesome-5==1.0.18
